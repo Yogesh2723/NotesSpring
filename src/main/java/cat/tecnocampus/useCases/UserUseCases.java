@@ -3,6 +3,7 @@ package cat.tecnocampus.useCases;
 import cat.tecnocampus.databaseRepositories.NoteLabRepository;
 import cat.tecnocampus.databaseRepositories.UserLabRepository;
 import cat.tecnocampus.domain.NoteLab;
+import cat.tecnocampus.domain.NoteLabBuilder;
 import cat.tecnocampus.domain.UserLab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,8 +44,13 @@ public class UserUseCases {
           userLabRepository.save(user);
     }
 
-    public NoteLab createUserNote(UserLab userLab, String title, String contents) {
-        return null;
+    public NoteLab addUserNote(UserLab userLab, String title, String contents) {
+        LocalDateTime now = LocalDateTime.now();
+        NoteLab note = new NoteLabBuilder().setTitle(title).setContent(contents).
+                setTime(now).setTimeEdit(now).createNoteLab();
+        userLab.addNote(note);
+        noteLabRepository.save(note, userLab);
+        return note;
     }
 
     public NoteLab updateNote(NoteLab note, String title, String contents) {
@@ -53,5 +59,9 @@ public class UserUseCases {
         note.setDateEdit(LocalDateTime.now());
         noteLabRepository.updateNote(note);
         return note;
+    }
+
+    public boolean exitstTitle(String title, UserLab user) {
+        return user.existNote(title);
     }
 }

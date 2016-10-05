@@ -48,7 +48,7 @@ public class NoteLabRepository {
         return jdbcOperations.batchUpdate("INSERT INTO note_lab (title, content, date_creation, date_edit, owner) values(?, ?, ?, ?, ?)", new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
-                NoteLab note = owner.getnotes().get(i);
+                NoteLab note = owner.getNotesAsList().get(i);
                 preparedStatement.setString(1, note.getTitle());
                 preparedStatement.setString(2, note.getContent());
                 preparedStatement.setTimestamp(3, Timestamp.valueOf(note.getDateCreation()));

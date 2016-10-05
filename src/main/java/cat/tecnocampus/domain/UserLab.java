@@ -1,7 +1,6 @@
 package cat.tecnocampus.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by roure on 19/09/2016.
@@ -13,14 +12,14 @@ public class UserLab {
     private String secondName;
     private String email;
 
-    private List<NoteLab> noteLabs;
+    private Map<String,NoteLab> noteLabs;
 
     public UserLab() {
-        noteLabs = new ArrayList<NoteLab>();
+        noteLabs = new HashMap<>();
     }
 
     public UserLab(String username, String name, String secondname, String email) {
-        this.noteLabs = new ArrayList<NoteLab>();
+        this.noteLabs = new HashMap<>();
         this.setUsername(username);
         this.setName(name);
         this.setSecondName(secondname);
@@ -59,16 +58,34 @@ public class UserLab {
         this.secondName = secondName;
     }
 
-    public List<NoteLab> getnotes() {
+    public Map<String, NoteLab> getnotes() {
         return this.noteLabs;
     }
 
-    public void setnotes(List<NoteLab> noteLabs) {
+    public List<NoteLab> getNotesAsList() {
+        Collection coll = noteLabs.values();
+        if (coll instanceof List) {
+            return (List) coll;
+        }
+        else {
+            return new ArrayList<>(coll);
+        }
+    }
+
+    public NoteLab getNote(String title) {
+        return noteLabs.get(title);
+    }
+
+    public void setnotes(Map<String, NoteLab> noteLabs) {
         this.noteLabs = noteLabs;
     }
 
     public NoteLab addNote(NoteLab noteLab) {
-        getnotes().add(noteLab);
+        if (!noteLabs.containsKey(noteLab.getTitle())) {
+            noteLabs.put(noteLab.getTitle(),noteLab);
+        } else {
+            throw new RuntimeException("Note's title is repeated");
+        }
 
         return noteLab;
     }
@@ -80,11 +97,14 @@ public class UserLab {
     }
 
     public void addNotes(List<NoteLab> notes) {
-        this.noteLabs.addAll(notes);
+        notes.forEach(n -> noteLabs.put(n.getTitle(),n));
     }
 
     public String toString() {
         return "Usuari: " + this.username + ", " + this.name + " " + this.secondName;
     }
 
+    public boolean existNote(String title) {
+        return noteLabs.containsKey(title);
+    }
 }

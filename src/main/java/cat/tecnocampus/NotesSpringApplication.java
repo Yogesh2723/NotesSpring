@@ -52,7 +52,11 @@ public class NotesSpringApplication {
 			public void createUserTransaction() {
 				UserLab u = new UserLab("aa", "pepe", "popo", "mail");
 				for (int i=0; i<5; i++) {
-					u.addNote(new NoteLab("hola", "content " + i, LocalDateTime.now(), LocalDateTime.now()));
+					try {
+						u.addNote(new NoteLab("hola " +i, "content " + i, LocalDateTime.now(), LocalDateTime.now()));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 				try {
 					userUseCases.saveUser(u);
