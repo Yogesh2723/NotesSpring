@@ -30,6 +30,10 @@ public class UserLabRepository {
         return jdbcOperations.query("Select * from user_lab", new UserLabMapper());
     }
 
+    public Iterable<UserLab> findAllLazy() {
+        return jdbcOperations.query("Select * from user_lab", new UserLabMapperLazy());
+    }
+
     public UserLab findOne(String userName) {
         return jdbcOperations.queryForObject("Select * from user_lab where username = ?", new Object[]{userName}, new UserLabMapper());
     }
@@ -52,4 +56,15 @@ public class UserLabRepository {
             return userLab;
         }
     }
+
+    private final class UserLabMapperLazy implements RowMapper<UserLab> {
+        @Override
+        public UserLab mapRow(ResultSet resultSet, int i) throws SQLException {
+            UserLab userLab = new UserLabBuilder().setUsername(resultSet.getString("username")).setName(resultSet.getString("name"))
+                    .setSecondname(resultSet.getString("second_name")).setEmail(resultSet.getString("email"))
+                    .createUserLab();
+            return userLab;
+        }
+    }
+
 }

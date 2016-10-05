@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,22 @@ public class NotesSpringApplication {
 				notes.forEach(n -> System.out.println( n.getTitle()));
 
 				userUseCases.createUser("jr", "pepe", "roure", "mail");
+
+				createUserTransaction();
+			}
+
+			//Creates an user with notes that have the same title. When saved a DuplicateKeyException is signalled
+			//and the user is not saved in the database
+			public void createUserTransaction() {
+				UserLab u = new UserLab("aa", "pepe", "popo", "mail");
+				for (int i=0; i<5; i++) {
+					u.addNote(new NoteLab("hola", "content " + i, LocalDateTime.now(), LocalDateTime.now()));
+				}
+				try {
+					userUseCases.saveUser(u);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		};
 	}

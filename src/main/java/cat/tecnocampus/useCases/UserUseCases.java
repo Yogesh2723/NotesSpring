@@ -6,6 +6,7 @@ import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.UserLab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -33,6 +34,13 @@ public class UserUseCases {
         }
 
         return userLab;
+    }
+
+    //The @Transactiona annotation states that saveUser is a transaction. So ,if a unchecked exception is signaled
+    // (and not cached) during the saveUser method the transaction is going to rollback
+    @Transactional
+    public void saveUser (UserLab user) {
+          userLabRepository.save(user);
     }
 
     public NoteLab createUserNote(UserLab userLab, String title, String contents) {
