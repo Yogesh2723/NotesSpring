@@ -51,14 +51,10 @@ public class NotesSpringApplication {
 			//and the user is not saved in the database
 			public void createUserTransaction() {
 				UserLab u = new UserLab("aa", "pepe", "popo", "mail");
-				for (int i=0; i<5; i++) {
-					try {
-						u.addNote(new NoteLab("hola " +i, "content " + i, LocalDateTime.now(), LocalDateTime.now()));
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
 				try {
+					for (int i = 0; i < 5; i++) {
+						u.addNote(new NoteLab("hola " + i, "content " + i, LocalDateTime.now(), LocalDateTime.now()));
+					}
 					userUseCases.saveUser(u);
 				} catch (Exception e) {
 					e.printStackTrace();

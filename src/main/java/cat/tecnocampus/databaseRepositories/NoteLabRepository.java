@@ -68,6 +68,12 @@ public class NoteLabRepository {
                 note.getTitle(), note.getContent(), LocalDateTime.now(), note.getDateCreation());
     }
 
+    public boolean existsNoteTitle(String title) {
+        int countOfNotes = jdbcOperations.queryForObject(
+                "select count(*) from note_lab where title = ?", Integer.class, title);
+        return countOfNotes > 0;
+    }
+
     private final class NoteLabMapper implements RowMapper<NoteLab> {
         @Override
         public NoteLab mapRow(ResultSet resultSet, int i) throws SQLException {
