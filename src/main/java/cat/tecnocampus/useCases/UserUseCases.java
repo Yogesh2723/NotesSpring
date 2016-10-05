@@ -68,4 +68,8 @@ public class UserUseCases {
     public boolean existsTitle(String title, UserLab user) {
         return user.existsNote(title);
     }
+
+    public Iterable<NoteLab> getAllNotes() {
+        return noteLabRepository.findAll();
+    }
 }
