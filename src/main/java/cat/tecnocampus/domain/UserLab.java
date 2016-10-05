@@ -104,7 +104,7 @@ public class UserLab {
         return "Usuari: " + this.username + ", " + this.name + " " + this.secondName;
     }
 
-    public boolean existNote(String title) {
+    public boolean existsNote(String title) {
         return noteLabs.containsKey(title);
     }
 }

@@ -5,7 +5,6 @@ import cat.tecnocampus.databaseRepositories.UserLabRepository;
 import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.NoteLabBuilder;
 import cat.tecnocampus.domain.UserLab;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +61,6 @@ public class UserUseCases {
     }
 
     public boolean exitstTitle(String title, UserLab user) {
-        return user.existNote(title);
+        return user.existsNote(title);
     }
 }
