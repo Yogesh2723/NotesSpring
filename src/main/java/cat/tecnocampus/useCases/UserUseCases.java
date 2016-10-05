@@ -6,6 +6,7 @@ import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.NoteLabBuilder;
 import cat.tecnocampus.domain.UserLab;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
  *
  * All methods update the database
  */
-@Component
+@Service
 public class UserUseCases {
     private NoteLabRepository noteLabRepository;
     private UserLabRepository userLabRepository;
@@ -39,7 +40,7 @@ public class UserUseCases {
     //The @Transactiona annotation states that saveUser is a transaction. So ,if a unchecked exception is signaled
     // (and not cached) during the saveUser method the transaction is going to rollback
     @Transactional
-    public void saveUser (UserLab user) {
+    public void saveUser(UserLab user) {
           userLabRepository.save(user);
     }
 
@@ -52,15 +53,19 @@ public class UserUseCases {
         return note;
     }
 
-    public NoteLab updateNote(NoteLab note, String title, String contents) {
+    public NoteLab updateUserNote(UserLab userLab, NoteLab note, String title, String contents) {
+        if (!title.equals(note.getTitle())) {
+            userLab.removeNote(note.getTitle());
+        }
         note.setTitle(title);
         note.setContent(contents);
         note.setDateEdit(LocalDateTime.now());
+        userLab.addNote(note);
         noteLabRepository.updateNote(note);
         return note;
     }
 
-    public boolean exitstTitle(String title, UserLab user) {
+    public boolean existsTitle(String title, UserLab user) {
         return user.existsNote(title);
     }
 }

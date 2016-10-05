@@ -96,6 +96,10 @@ public class UserLab {
         return noteLab;
     }
 
+    public NoteLab removeNote(String title) {
+        return noteLabs.remove(title);
+    }
+
     public void addNotes(List<NoteLab> notes) {
         notes.forEach(n -> noteLabs.put(n.getTitle(),n));
     }
