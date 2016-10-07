@@ -70,12 +70,13 @@ public class UserUseCaseController {
         model.addAttribute("userLab", userUseCases.getUser(username));
         return "showUser";
     }
-
+    
     @GetMapping("users/{user}")
     public String showUser(@PathVariable("user") String user, Model model) {
         model.addAttribute("userLab", userUseCases.getUser(user));
         return "showUser";
     }
+
     @GetMapping("users/{user}/notes")
     public String listUserNotes(@PathVariable String user, Model model) {
 
@@ -84,6 +85,4 @@ public class UserUseCaseController {
 
         return "userNotes";
     }
-
-
 }
