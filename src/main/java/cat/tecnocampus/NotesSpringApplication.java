@@ -38,7 +38,7 @@ public class NotesSpringApplication {
 				users.forEach(u -> System.out.println(u.getUsername() + u.getName()));
 
 				Iterable<NoteLab> notes = noteLabRepository.findAll();
-				notes.forEach(n -> System.out.println( n.getTitle()));
+				notes.forEach(n -> System.out.println( n.getTitle() + "  " + n.getDateEdit()));
 
 				userUseCases.createUser("jr", "pepe", "roure", "mail");
 

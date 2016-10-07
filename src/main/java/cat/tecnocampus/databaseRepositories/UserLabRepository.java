@@ -26,11 +26,11 @@ public class UserLabRepository {
         this.noteLabRepository = noteLabRepository;
     }
 
-    public Iterable<UserLab> findAll() {
+    public List<UserLab> findAll() {
         return jdbcOperations.query("Select * from user_lab", new UserLabMapper());
     }
 
-    public Iterable<UserLab> findAllLazy() {
+    public List<UserLab> findAllLazy() {
         return jdbcOperations.query("Select * from user_lab", new UserLabMapperLazy());
     }
 

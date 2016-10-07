@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by roure on 20/09/2016.
@@ -65,11 +66,24 @@ public class UserUseCases {
         return note;
     }
 
+    public List<NoteLab> getUserNotes(String userName) {
+        return noteLabRepository.findAllFromUser(userName);
+    }
+
+    //Note that users don't have their notes with them
+    public List<UserLab> getUsers() {
+        return userLabRepository.findAllLazy();
+    }
+
+    public UserLab getUser(String userName) {
+        return userLabRepository.findOne(userName);
+    }
+
     public boolean existsTitle(String title, UserLab user) {
         return user.existsNote(title);
     }
 
-    public Iterable<NoteLab> getAllNotes() {
+    public List<NoteLab> getAllNotes() {
         return noteLabRepository.findAll();
     }
 }

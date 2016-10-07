@@ -27,7 +27,7 @@ public class NoteLabRepository {
         this.jdbcOperations = jdbcOperations;
     }
 
-    public Iterable<NoteLab> findAll() {
+    public List<NoteLab> findAll() {
         return jdbcOperations.query("Select * from note_lab", new NoteLabRepository.NoteLabMapper());
     }
 
