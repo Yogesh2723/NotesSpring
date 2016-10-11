@@ -12,8 +12,14 @@ public class UserLab {
     @NotNull
     @Size(min=5, max=15)
     private String username;
+
+    @Size(min=5, max=15)
     private String name;
+
+    @Size(min=5, max=15)
     private String secondName;
+
+    @Size(min=5, max=15)
     private String email;
 
     private Map<String,NoteLab> noteLabs;

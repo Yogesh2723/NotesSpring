@@ -102,7 +102,6 @@ public class UserUseCaseController {
         userUseCases.registerUser(user);
 
 
-
         //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
 
         redirectAttributes.addAttribute("username", user.getUsername());
