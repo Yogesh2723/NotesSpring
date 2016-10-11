@@ -29,13 +29,16 @@ public class UserUseCases {
 
     public UserLab createUser(String username, String name, String secondName, String email) {
         UserLab userLab = new UserLab(username, name, secondName, email);
+        registerUser(userLab);
+        return userLab;
+    }
+
+    public void registerUser(UserLab userLab) {
         try {
             userLabRepository.save(userLab);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return userLab;
     }
 
     //The @Transactiona annotation states that saveUser is a transaction. So ,if a unchecked exception is signaled

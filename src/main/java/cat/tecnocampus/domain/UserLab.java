@@ -1,5 +1,7 @@
 package cat.tecnocampus.domain;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 /**
@@ -7,6 +9,8 @@ import java.util.*;
  */
 public class UserLab {
 
+    @NotNull
+    @Size(min=5, max=15)
     private String username;
     private String name;
     private String secondName;
