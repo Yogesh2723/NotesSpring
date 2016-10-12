@@ -81,7 +81,11 @@ public class UserUseCaseController {
     
     @GetMapping("users/{user}")
     public String showUser(@PathVariable("user") String user, Model model) {
-        model.addAttribute("userLab",userUseCases.getUser(user));
+        //we're going to ask to UserUseCases for a user only if the model
+        //doesn't already carry one (from a redirect)
+        if (!model.containsAttribute("userLab")) {
+            model.addAttribute("userLab",userUseCases.getUser(user));
+        }
         return "showUser";
     }
 
@@ -110,6 +114,7 @@ public class UserUseCaseController {
 
         redirectAttributes.addAttribute("username", user.getUsername());
         redirectAttributes.addAttribute("pepe", "pepe"); // this attribute shows in the calling url as a parameter
+        redirectAttributes.addFlashAttribute("userLab", user);
 
         return "redirect:users/{username}"; //in this way username is scaped and dangerous chars changed
     }
