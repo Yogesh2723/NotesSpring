@@ -130,8 +130,6 @@ public class UserUseCaseController {
      */
     @ExceptionHandler(UserLabUsernameAlreadyExistsException.class)
     public String handleUsernameAlreadyExists(Model model, HttpServletRequest request) {
-
-        System.out.println("AAAAAAAAAAAAAAAAAAAAA " + request.getAttribute("username"));
         model.addAttribute("username", request.getAttribute("username"));
         return "error/usernameAlreadyExists";
     }
