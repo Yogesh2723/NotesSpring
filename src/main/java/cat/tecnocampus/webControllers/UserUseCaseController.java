@@ -105,9 +105,11 @@ public class UserUseCaseController {
     }
 
     @PostMapping("createuser")
-    public String processCreateUser(@Valid UserLab user, Errors errors, Model model, RedirectAttributes redirectAttributes) {
+    public String processCreateUser(@Valid UserLab user, Errors errors, Model model,
+                                    RedirectAttributes redirectAttributes, HttpServletRequest request) {
         if (errors.hasErrors()) return "userform";
 
+        request.setAttribute("username", user.getUsername());
         userUseCases.registerUser(user);
 
         //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
@@ -127,8 +129,10 @@ public class UserUseCaseController {
     with @ExceptionHandler
      */
     @ExceptionHandler(UserLabUsernameAlreadyExistsException.class)
-    public String handleUsernameAlreadyExists() {
+    public String handleUsernameAlreadyExists(Model model, HttpServletRequest request) {
 
+        System.out.println("AAAAAAAAAAAAAAAAAAAAA " + request.getAttribute("username"));
+        model.addAttribute("username", request.getAttribute("username"));
         return "error/usernameAlreadyExists";
     }
 }
