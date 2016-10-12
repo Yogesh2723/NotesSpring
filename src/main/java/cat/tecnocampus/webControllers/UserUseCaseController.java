@@ -2,7 +2,11 @@ package cat.tecnocampus.webControllers;
 
 import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.UserLab;
+import cat.tecnocampus.exceptions.UserLabNotFoundException;
+import cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException;
 import cat.tecnocampus.useCases.UserUseCases;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -76,7 +81,7 @@ public class UserUseCaseController {
     
     @GetMapping("users/{user}")
     public String showUser(@PathVariable("user") String user, Model model) {
-        model.addAttribute("userLab", userUseCases.getUser(user));
+        model.addAttribute("userLab",userUseCases.getUser(user));
         return "showUser";
     }
 
@@ -101,11 +106,24 @@ public class UserUseCaseController {
 
         userUseCases.registerUser(user);
 
-
         //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
 
         redirectAttributes.addAttribute("username", user.getUsername());
         redirectAttributes.addAttribute("pepe", "pepe"); // this attribute shows in the calling url as a parameter
+
         return "redirect:users/{username}"; //in this way username is scaped and dangerous chars changed
+    }
+
+    /*
+    This method is called whenever a UserLabUsernameAlreadyExistsException is signalled from any of the
+    @RequestMapping annotated methods in this controller.
+    We can have Advising Controllers that handle exceptions from all the controllers (no just one).
+    The advising controllers must be annotated with @ControllerAdvice and have one or more methods annotated
+    with @ExceptionHandler
+     */
+    @ExceptionHandler(UserLabUsernameAlreadyExistsException.class)
+    public String handleUsernameAlreadyExists() {
+
+        return "error/usernameAlreadyExists";
     }
 }

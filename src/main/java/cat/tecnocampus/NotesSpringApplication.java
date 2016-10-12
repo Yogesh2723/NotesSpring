@@ -40,7 +40,11 @@ public class NotesSpringApplication {
 				Iterable<NoteLab> notes = noteLabRepository.findAll();
 				notes.forEach(n -> System.out.println( n.getTitle() + "  " + n.getDateEdit()));
 
-				userUseCases.createUser("jr", "pepe", "roure", "mail");
+				try {
+					userUseCases.createUser("jr", "pepe", "roure", "mail");
+				} catch (Exception e) {
+					//e.printStackTrace();
+				}
 
 				createUserTransaction();
 			}

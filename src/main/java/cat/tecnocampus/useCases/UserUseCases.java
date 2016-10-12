@@ -5,6 +5,10 @@ import cat.tecnocampus.databaseRepositories.UserLabRepository;
 import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.NoteLabBuilder;
 import cat.tecnocampus.domain.UserLab;
+import cat.tecnocampus.exceptions.UserLabNotFoundException;
+import cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +40,8 @@ public class UserUseCases {
     public void registerUser(UserLab userLab) {
         try {
             userLabRepository.save(userLab);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (DuplicateKeyException e) {
+            throw new UserLabUsernameAlreadyExistsException("Username: " + userLab.getUsername() + " already exists");
         }
     }
 
@@ -79,7 +83,11 @@ public class UserUseCases {
     }
 
     public UserLab getUser(String userName) {
-        return userLabRepository.findOne(userName);
+        try {
+            return userLabRepository.findOne(userName);
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserLabNotFoundException("UserLab " + userName + " not found");
+        }
     }
 
     public boolean existsTitle(String title, UserLab user) {
