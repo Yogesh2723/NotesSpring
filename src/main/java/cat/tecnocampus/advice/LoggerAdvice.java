@@ -1,9 +1,7 @@
 package cat.tecnocampus.advice;
 
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -39,6 +37,20 @@ public class LoggerAdvice {
         logger.info("Going to deal with notes");
     }
 
-    
+    @Around("execution(* *.showUserRequestParameter(..))")
+    public String dealRequestParam(ProceedingJoinPoint jp) {
+
+        try {
+            logger.info("Before showing user (request parameter)");
+            String res = (String)jp.proceed();
+            logger.info("After showing user (request parameter)");
+            return res;
+        } catch (Throwable throwable) {
+            logger.info("Something went wrong (request parameter)");
+            throwable.printStackTrace();
+            return "error";
+        }
+    }
+
 
 }
