@@ -28,7 +28,7 @@ public class LoggerAdvice {
         logger.info("Already listed all users");
     }
 
-    //A pointctu that matches all methods having the word "Notes" in any position of methods' name
+    //A pointcut that matches all methods having the word "Notes" in any position of methods' name
     @Pointcut("execution(* cat.tecnocampus.webControllers.UserUseCaseController.*Notes*(..))")
     public void pointcutNotes() {}
 
@@ -37,11 +37,14 @@ public class LoggerAdvice {
         logger.info("Going to deal with notes");
     }
 
+    //Around pointcut. Note that this method must return what the proxied method is supposed to return
     @Around("execution(* *.showUserRequestParameter(..))")
     public String dealRequestParam(ProceedingJoinPoint jp) {
 
         try {
             logger.info("Before showing user (request parameter)");
+            //note that showUserRequestParameter is proxied and it must return a string
+            // representing the thymeleaf file name
             String res = (String)jp.proceed();
             logger.info("After showing user (request parameter)");
             return res;
@@ -50,6 +53,16 @@ public class LoggerAdvice {
             throwable.printStackTrace();
             return "error";
         }
+    }
+
+    //Getting the parameters of the proxied method
+    //@Pointcut("execution(* cat.tecnocampus.webControllers.UserUseCaseController.showUser(String, ..))&&args(name,..)")
+    @Pointcut("execution(* cat.tecnocampus.webControllers.UserUseCaseController.showUser(..)) && args(name,..)")
+    public void showUserPointcut(String name) {}
+
+    @Before("showUserPointcut(name)")
+    public void showUserAdvice(String name) {
+        logger.info("Going to show user: " + name);
     }
 
 
