@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class LoggerAdvice {
     Logger logger = LoggerFactory.getLogger(LoggerAdvice.class);
 
+    //A pointcut that matches one single method
     @Pointcut("execution(* cat.tecnocampus.webControllers.UserUseCaseController.listUsers(..))")
     public void pointcutListUsers() {}
 
@@ -28,4 +29,16 @@ public class LoggerAdvice {
     public void afterListUsers() {
         logger.info("Already listed all users");
     }
+
+    //A pointctu that matches all methods having the word "Notes" in any position of methods' name
+    @Pointcut("execution(* cat.tecnocampus.webControllers.UserUseCaseController.*Notes*(..))")
+    public void pointcutNotes() {}
+
+    @Before("pointcutNotes()")
+    public void beforeDealingNotes() {
+        logger.info("Going to deal with notes");
+    }
+
+    
+
 }
