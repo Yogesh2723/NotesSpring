@@ -30,7 +30,7 @@ public class WebFlowConfig extends AbstractFlowConfiguration {
     @Bean
     public FlowExecutor flowExecutor() {
         return getFlowExecutorBuilder(flowRegistry())
-                .addFlowExecutionListener(new SecurityFlowExecutionListener(), "*")
+//                .addFlowExecutionListener(new SecurityFlowExecutionListener(), "*")
                 .build();
     }
 
