@@ -30,6 +30,11 @@ public class UserUseCaseController {
         this.userUseCases = userUseCases;
     }
 
+    @GetMapping
+    public String welcome() {
+        return "welcome";
+    }
+
     //same as @RequestMapping(path="notes", method= RequestMethod.GET)
     @GetMapping("notes")
     public List<NoteLab> listNotes() {

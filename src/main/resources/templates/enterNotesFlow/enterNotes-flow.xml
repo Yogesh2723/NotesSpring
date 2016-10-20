@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <var name="user" class="cat.tecnocampus.domain.UserLab" />
+
+    <subflow-state id="identifyUser" subflow="identifyUserFlow">
+        <transition on="userReady" to="enterNotes"/>
+    </subflow-state>
+
+    <subflow-state id="enterNotes" subflow="notes">
+        <transition on="notesReady" to="goodBye"/>
+    </subflow-state>
+    
+    <view-state id="goodBye">
+        <transition to="endState"/>
+    </view-state>
+
+    <end-state id="endState"/>
+
+    <end-state id="candel"/>
+
+    <global-transitions>
+        <transition on="cancel" to="cancel"></transition>
+    </global-transitions>
+</flow>

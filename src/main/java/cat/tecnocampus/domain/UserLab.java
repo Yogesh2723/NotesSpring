@@ -2,12 +2,13 @@ package cat.tecnocampus.domain;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by roure on 19/09/2016.
  */
-public class UserLab {
+public class UserLab implements Serializable{
 
     @NotNull
     @Size(min=5, max=15)
