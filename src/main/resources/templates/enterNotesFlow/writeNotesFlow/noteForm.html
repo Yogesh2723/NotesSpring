@@ -10,7 +10,7 @@
 <body>
 
 
-<!--<h1> <span th:text="${userLab.name} + ' ' + ${userLab.secondName}"/></h1>-->
+<h1> <span th:text="${userLab.name} + ' ' + ${userLab.secondName}"/></h1>
 
 <form method="POST" th:object="${noteLab}" th:action="${flowExecutionUrl}">
 
@@ -20,7 +20,7 @@
 
 
     <input type="submit" value="Create Note" name="_eventId_noteEntered" />
-    <input type="submit" value="Finish Entering Notes" name="_eventId_noteEntered" />
+    <input type="submit" value="Finish Entering Notes" name="_eventId_finishedNotes" />
     <input type="reset" value="Cancel" name="_eventId_cancel"/>
 
 </form>

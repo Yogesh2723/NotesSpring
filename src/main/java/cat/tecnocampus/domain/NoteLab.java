@@ -24,6 +24,7 @@ public class NoteLab implements Serializable{
 
     public NoteLab() {
         dateCreation = LocalDateTime.now();
+        dateEdit=dateCreation;
     }
 
     public String getTitle() {

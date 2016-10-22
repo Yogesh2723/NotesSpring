@@ -5,9 +5,11 @@
 
     <input name="userLab" required="true"/>
 
+<!--
     <on-start>
         <evaluate result="flowScope.noteLab" expression="new cat.tecnocampus.domain.NoteLab()"/>
     </on-start>
+-->
 
     <view-state id="showNotes" view="enterNotesFlow/writeNotesFlow/showUser" model="userLab">
         <transition on="enterNote" to="createNote"/>
@@ -16,17 +18,34 @@
     </view-state>
 
     <view-state id="createNote" view="enterNotesFlow/writeNotesFlow/noteForm" model="noteLab">
+        <on-entry>
+            <set name="flowScope.noteLab" value="new cat.tecnocampus.domain.NoteLab()"/>
+        </on-entry>
+<!--  why doesn't it work here?  and it did when set on-start
         <binder>
             <binding property="title"/>
             <binding property="content"/>
         </binder>
+-->
         <transition on="noteEntered" to="showNotes">
+<!--
             <evaluate expression="userLab.addNote(flowScope.noteLab)"/>
+-->
+            <evaluate expression="userUseCases.addUserNote(userLab,flowScope.noteLab)"/>
         </transition>
         <transition on="finishedNotes" to="finish"/>
         <transition on="cancel" to="cancel"/>
     </view-state>
 
+<!--
+    <view-state id="finish" view="enterNotesFlow/writeNotesFlow/showUser">
+        <transition to="end"/>
+    </view-state>
+-->
+
+    <end-state id="finish"/>
+
+    <end-state id="cancel"/>
 
     <global-transitions>
         <transition on="cancel" to="cancel"></transition>

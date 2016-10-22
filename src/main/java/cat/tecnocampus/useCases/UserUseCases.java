@@ -61,6 +61,13 @@ public class UserUseCases {
         return note;
     }
 
+    public NoteLab addUserNote(UserLab userLab, NoteLab noteLab) {
+        userLab.addNote(noteLab);
+        noteLabRepository.save(noteLab, userLab);
+
+        return noteLab;
+    }
+
     public NoteLab updateUserNote(UserLab userLab, NoteLab note, String title, String contents) {
         if (!title.equals(note.getTitle())) {
             userLab.removeNote(note.getTitle());
