@@ -37,6 +37,6 @@
     <end-state id="cancel"/>
 
     <global-transitions>
-        <transition on="cancel" to="cancel"></transition>
+        <transition on="cancel" to="cancel" validate="false"></transition>
     </global-transitions>
 </flow>

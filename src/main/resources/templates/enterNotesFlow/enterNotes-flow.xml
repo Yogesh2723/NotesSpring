@@ -13,15 +13,16 @@
 
     <subflow-state id="enterNotes" subflow="enterNotesFlow/writeNotesFlow">
         <input name="userLab" value="userLab"/>
-        <transition to="goodBye"/>
+        <transition on="finish" to="goodBye"/>
     </subflow-state>
-    
+
     <view-state id="goodBye" view="enterNotesFlow/showUserFinish">
         <transition on="proceed" to="endState"/>
     </view-state>
 
+
     <end-state id="endState" view="externalRedirect:contextRelative:/users/#{userLab.username}"/>
-    <end-state id="candel"/>
+    <end-state id="cancel" view="externalRedirect:/canceledFlow.html"/>
 
     <global-transitions>
         <transition on="cancel" to="cancel"></transition>

@@ -21,12 +21,6 @@
         <on-entry>
             <set name="flowScope.noteLab" value="new cat.tecnocampus.domain.NoteLab()"/>
         </on-entry>
-<!--  why doesn't it work here?  and it did when set on-start
-        <binder>
-            <binding property="title"/>
-            <binding property="content"/>
-        </binder>
--->
         <transition on="noteEntered" to="showNotes">
 <!--
             <evaluate expression="userLab.addNote(flowScope.noteLab)"/>
@@ -34,14 +28,7 @@
             <evaluate expression="userUseCases.addUserNote(userLab,flowScope.noteLab)"/>
         </transition>
         <transition on="finishedNotes" to="finish"/>
-        <transition on="cancel" to="cancel"/>
     </view-state>
-
-<!--
-    <view-state id="finish" view="enterNotesFlow/writeNotesFlow/showUser">
-        <transition to="end"/>
-    </view-state>
--->
 
     <end-state id="finish"/>
 
