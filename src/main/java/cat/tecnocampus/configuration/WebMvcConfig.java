@@ -1,6 +1,10 @@
 package cat.tecnocampus.configuration;
 
+import org.apache.catalina.Context;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatContextCustomizer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -9,6 +13,8 @@ import org.springframework.webflow.mvc.servlet.FlowHandlerMapping;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.AjaxThymeleafViewResolver;
 import org.thymeleaf.spring4.view.FlowAjaxThymeleafView;
+
+import java.util.Arrays;
 
 /**
  * Created by roure on 19/10/2016.

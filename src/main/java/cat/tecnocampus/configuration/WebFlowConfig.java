@@ -1,6 +1,10 @@
 package cat.tecnocampus.configuration;
 
+import org.apache.catalina.Context;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatContextCustomizer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
@@ -11,6 +15,7 @@ import org.springframework.webflow.executor.FlowExecutor;
 import org.springframework.webflow.mvc.builder.MvcViewFactoryCreator;
 import org.springframework.webflow.security.SecurityFlowExecutionListener;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,5 +63,4 @@ public class WebFlowConfig extends AbstractFlowConfiguration {
         factoryCreator.setUseSpringBeanBinding(true);
         return factoryCreator;
     }
-
 }

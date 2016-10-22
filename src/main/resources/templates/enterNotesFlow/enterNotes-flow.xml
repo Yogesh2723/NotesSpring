@@ -4,13 +4,14 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
 
-    <var name="user" class="cat.tecnocampus.domain.UserLab" />
+    <var name="userLab" class="cat.tecnocampus.domain.UserLab" />
 
-    <subflow-state id="identifyUser" subflow="identifyUserFlow">
+    <subflow-state id="identifyUser" subflow="enterNotesFlow/identifyUserFlow">
         <transition on="userReady" to="enterNotes"/>
     </subflow-state>
 
-    <subflow-state id="enterNotes" subflow="notes">
+    <subflow-state id="enterNotes" subflow="enterNotesFlow/writeNotesFlow">
+        <input name="userLab" value="userLab"/>
         <transition on="notesReady" to="goodBye"/>
     </subflow-state>
     

@@ -5,13 +5,18 @@ import cat.tecnocampus.databaseRepositories.UserLabRepository;
 import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.UserLab;
 import cat.tecnocampus.useCases.UserUseCases;
+import org.apache.catalina.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatContextCustomizer;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @SpringBootApplication
 public class NotesSpringApplication {

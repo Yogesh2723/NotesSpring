@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    <input name="userLab"required="true"/>
+
+    <view-state id="noteForm" >
+        <transition on="createNote" to="createNote"/>
+        <transition on="finishedNotes" to="finish"/>
+        <transition on="cancel" to="cancel"/>
+    </view-state>
+
+
+    <global-transitions>
+        <transition on="cancel" to="cancel"></transition>
+    </global-transitions>
+
+</flow>

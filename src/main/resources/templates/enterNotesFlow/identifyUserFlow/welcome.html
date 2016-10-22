@@ -7,8 +7,8 @@
 </head>
 <body>
 <h1>Welcome!!!</h1>
-<form>
-    <input type="hidden" name="_flowExecutionKey" th:value="${flowExecutionKey}"/>
+<form method="post" th:action="${flowExecutionUrl}">
+    <!--input type="hidden" name="_flowExecutionKey" th:value="${flowExecutionKey}"/-->
     <input type="text" name="username"/>
     <input type="submit" name="_eventId_userEntered" value="Lookup User"/>
     <input type="reset" value="Cancel" name="cancel"/>

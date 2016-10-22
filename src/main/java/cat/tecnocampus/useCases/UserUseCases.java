@@ -21,7 +21,7 @@ import java.util.List;
  *
  * All methods update the database
  */
-@Service
+@Service("userUseCases")
 public class UserUseCases {
     private NoteLabRepository noteLabRepository;
     private UserLabRepository userLabRepository;

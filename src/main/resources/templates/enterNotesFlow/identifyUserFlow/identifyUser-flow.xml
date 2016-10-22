@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <var name="userLab" class="cat.tecnocampus.domain.UserLab" />
+
+
+    <view-state id="welcome" view="enterNotesFlow/identifyUserFlow/welcome">
+        <transition on="userEntered" to="lookupUser"/>
+    </view-state>
+
+    <action-state id="lookupUser">
+        <evaluate expression="userUseCases.getUser(requestParameters.username)"
+                  result="userLab"/>
+        <transition on-exception="cat.tecnocampus.exceptions.UserLabNotFoundException" to="registerUser"/>
+        <transition to="userReady"/>
+    </action-state>
+
+    <view-state id="registerUser" model="userLab" view="enterNotesFlow/identifyUserFlow/userform">
+        <on-entry>
+            <evaluate expression="userLab.username=requestParameters.username"/>
+        </on-entry>
+        <transition on="usernameEntered" to="saveUser"/>
+    </view-state>
+
+    <action-state id="saveUser">
+        <evaluate expression="userUseCases.saveUser(userLab)"/>
+        <transition to="userReady"/>
+    </action-state>
+
+    <end-state id="userReady">
+        <output name="userLab"/>
+    </end-state>
+
+    <end-state id="cancel"/>
+
+    <global-transitions>
+        <transition on="cancel" to="cancel"></transition>
+    </global-transitions>
+</flow>
