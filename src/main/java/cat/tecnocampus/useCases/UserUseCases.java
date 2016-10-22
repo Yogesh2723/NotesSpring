@@ -2,6 +2,7 @@ package cat.tecnocampus.useCases;
 
 import cat.tecnocampus.databaseRepositories.NoteLabRepository;
 import cat.tecnocampus.databaseRepositories.UserLabRepository;
+import cat.tecnocampus.domain.BagNoteLab;
 import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.NoteLabBuilder;
 import cat.tecnocampus.domain.UserLab;
@@ -66,6 +67,10 @@ public class UserUseCases {
         noteLabRepository.save(noteLab, userLab);
 
         return noteLab;
+    }
+
+    public void addBag(UserLab userLab, BagNoteLab bagNoteLab) {
+        bagNoteLab.getNotes().forEach(noteLab -> {addUserNote(userLab,noteLab);});
     }
 
     public NoteLab updateUserNote(UserLab userLab, NoteLab note, String title, String contents) {

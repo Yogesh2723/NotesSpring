@@ -5,11 +5,9 @@
 
     <input name="userLab" required="true"/>
 
-<!--
     <on-start>
-        <evaluate result="flowScope.noteLab" expression="new cat.tecnocampus.domain.NoteLab()"/>
+        <evaluate result="flowScope.bagNoteLab" expression="new cat.tecnocampus.domain.BagNoteLab()"/>
     </on-start>
--->
 
     <view-state id="showNotes" view="enterNotesFlow/writeNotesFlow/showUser" model="userLab">
         <transition on="enterNote" to="createNote"/>
@@ -22,15 +20,14 @@
             <set name="flowScope.noteLab" value="new cat.tecnocampus.domain.NoteLab()"/>
         </on-entry>
         <transition on="noteEntered" to="showNotes">
-<!--
-            <evaluate expression="userLab.addNote(flowScope.noteLab)"/>
--->
-            <evaluate expression="userUseCases.addUserNote(userLab,flowScope.noteLab)"/>
+            <evaluate expression="bagNoteLab.addNote(flowScope.noteLab)"/>
         </transition>
         <transition on="finishedNotes" to="finish"/>
     </view-state>
 
-    <end-state id="finish"/>
+    <end-state id="finish">
+        <output name="bagNoteLab"/>
+    </end-state>
 
     <end-state id="cancel"/>
 

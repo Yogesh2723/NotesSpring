@@ -46,7 +46,7 @@ public class NotesSpringApplication {
 				notes.forEach(n -> System.out.println( n.getTitle() + "  " + n.getDateEdit()));
 
 				try {
-					userUseCases.createUser("jr", "pepe", "roure", "mail");
+					userUseCases.createUser("jrjrjr", "pepeillo", "roure", "mail@@");
 				} catch (Exception e) {
 					//e.printStackTrace();
 				}
@@ -57,7 +57,7 @@ public class NotesSpringApplication {
 			//Creates an user with notes that have the same title. When saved a DuplicateKeyException is signalled
 			//and the user is not saved in the database
 			public void createUserTransaction() {
-				UserLab u = new UserLab("aa", "pepe", "popo", "mail");
+				UserLab u = new UserLab("aaaaa", "pepepe", "popopo", "mail@@");
 				try {
 					for (int i = 0; i < 5; i++) {
 						u.addNote(new NoteLab("hola " + i, "content " + i, LocalDateTime.now(), LocalDateTime.now()));

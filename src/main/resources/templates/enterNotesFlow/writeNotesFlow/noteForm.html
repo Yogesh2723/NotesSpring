@@ -26,9 +26,9 @@
 </form>
 
 
-<h1>Notes List</h1>
+<h1>Bag of notes</h1>
 <ul>
-    <li th:each="note : ${userLab.NotesAsList}"
+    <li th:each="note : ${bagNoteLab.Notes}"
         th:id="'note_' + ${note.title}">
         <div th:text="${note.title}">Note title</div>
         <div th:text="${note.dateEdit}">Edit date</div>
