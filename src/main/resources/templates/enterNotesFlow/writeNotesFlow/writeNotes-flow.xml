@@ -9,7 +9,7 @@
         <evaluate result="flowScope.bagNoteLab" expression="new cat.tecnocampus.domain.BagNoteLab()"/>
     </on-start>
 
-    <view-state id="showNotes" view="enterNotesFlow/writeNotesFlow/showUser" model="userLab">
+    <view-state id="showNotes" view="enterNotesFlow/writeNotesFlow/showUserBag">
         <transition on="enterNote" to="createNote"/>
         <transition on="finishedNotes" to="finish"/>
         <transition on="cancel" to="cancel"/>
