@@ -7,13 +7,13 @@ INSERT INTO note_lab (title, content, date_creation, date_edit, owner) VALUES ('
 INSERT INTO note_lab (title, content, date_creation, date_edit, owner) VALUES ('spring boot', 'va encara millor', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'jrjrjr');
 
 INSERT INTO users(username,password,enabled)
-VALUES ('mkyong','123456', true);
+VALUES ('aaaaaa','aaaaaa', true);
 INSERT INTO users(username,password,enabled)
-VALUES ('alex','123456', true);
+VALUES ('jrjrjr','jrjrjr', true);
 
 INSERT INTO user_roles (username, role)
-VALUES ('mkyong', 'ROLE_USER');
+VALUES ('aaaaaa', 'ROLE_USER');
 INSERT INTO user_roles (username, role)
-VALUES ('mkyong', 'ROLE_ADMIN');
+VALUES ('aaaaaa', 'ROLE_ADMIN');
 INSERT INTO user_roles (username, role)
-VALUES ('alex', 'ROLE_USER');
+VALUES ('jrjrjr', 'ROLE_USER');
