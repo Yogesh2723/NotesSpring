@@ -46,6 +46,11 @@ public class UserUseCases {
         }
     }
 
+    public void registerUser(UserLab userLab, String password) {
+        registerUser(userLab);
+        userLabRepository.saveAuthentication(userLab.getUsername(), password);
+    }
+
     //The @Transactiona annotation states that saveUser is a transaction. So ,if a unchecked exception is signaled
     // (and not cached) during the saveUser method the transaction is going to rollback
     @Transactional

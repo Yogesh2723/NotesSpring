@@ -14,6 +14,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.webflow.mvc.servlet.FlowHandlerAdapter;
 import org.springframework.webflow.mvc.servlet.FlowHandlerMapping;
@@ -128,7 +130,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                     //order matters. First the most specific. Last anyRequest
                     // pattrn "/users/**" match users/ and users/whatevere while pattern "users/*" only matches /users/whatever
                     .antMatchers("/users/*").hasRole("USER")  //hasAnyRole()
-                    .antMatchers("static/**").permitAll()
+                    .antMatchers("/static/**", "/createuser/**").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers("/enterNotesFlow").authenticated()
                     .anyRequest().authenticated()
@@ -148,8 +150,14 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                     .usersByUsernameQuery(
                             "select username,password, enabled from users where username=?")
                     .authoritiesByUsernameQuery(
-                            "select username, role from user_roles where username=?");
+                            "select username, role from user_roles where username=?")
+                    .passwordEncoder(passEncoder());
         }
 
+    }
+
+    @Bean
+    public PasswordEncoder passEncoder() {
+        return new BCryptPasswordEncoder();
     }
  }

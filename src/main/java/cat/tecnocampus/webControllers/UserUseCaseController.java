@@ -109,10 +109,15 @@ public class UserUseCaseController {
     @PostMapping("createuser")
     public String processCreateUser(@Valid UserLab user, Errors errors, Model model,
                                     RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        String password;
+
         if (errors.hasErrors()) return "userform";
 
         request.setAttribute("username", user.getUsername());
-        userUseCases.registerUser(user);
+        password = request.getParameter("password");
+
+        System.out.println("password = " + password);
+        userUseCases.registerUser(user, password);
 
         //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
 
