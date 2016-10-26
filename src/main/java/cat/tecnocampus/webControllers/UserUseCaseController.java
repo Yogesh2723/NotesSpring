@@ -7,6 +7,8 @@ import cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException;
 import cat.tecnocampus.useCases.UserUseCases;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -125,6 +127,16 @@ public class UserUseCaseController {
 
         return "redirect:users/{username}"; //in this way username is scaped and dangerous chars changed
     }
+
+    @GetMapping("hello")
+    public String getAuthenticatedUser(RedirectAttributes redirectAttributes) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName(); //get logged in username
+
+        redirectAttributes.addAttribute("username", name);
+        return "redirect:users/{username}";
+    }
+
 
     /*
     This method is called whenever a UserLabUsernameAlreadyExistsException is signalled from any of the

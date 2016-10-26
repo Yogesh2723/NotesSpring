@@ -28,15 +28,12 @@ import java.util.List;
 public class WebFlowConfig extends AbstractFlowConfiguration {
 
     @Autowired
-    private WebMvcConfig webMvcConfig;
-
-    @Autowired
     private List<ViewResolver> viewResolvers;
 
     @Bean
     public FlowExecutor flowExecutor() {
         return getFlowExecutorBuilder(flowRegistry())
-//                .addFlowExecutionListener(new SecurityFlowExecutionListener(), "*")
+                .addFlowExecutionListener(new SecurityFlowExecutionListener(), "*")
                 .build();
     }
 
@@ -58,8 +55,6 @@ public class WebFlowConfig extends AbstractFlowConfiguration {
 
     @Bean
     public MvcViewFactoryCreator mvcViewFactoryCreator() {
-        viewResolvers.add(this.webMvcConfig.ajaxThymeleafViewResolver());
-
         MvcViewFactoryCreator factoryCreator = new MvcViewFactoryCreator();
         factoryCreator.setViewResolvers(viewResolvers);
         factoryCreator.setUseSpringBeanBinding(true);

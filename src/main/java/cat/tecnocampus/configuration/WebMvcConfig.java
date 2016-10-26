@@ -7,6 +7,11 @@ import org.springframework.boot.context.embedded.tomcat.TomcatContextCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.webflow.mvc.servlet.FlowHandlerAdapter;
 import org.springframework.webflow.mvc.servlet.FlowHandlerMapping;
@@ -54,4 +59,50 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         viewResolver.setTemplateEngine(springTemplateEngine);
         return viewResolver;
     }
-}
+
+
+    /*
+     ********************   This is the configuration for SECURITY ***************************************************
+     */
+    @Configuration
+    public class WebSecurityConf extends WebSecurityConfigurerAdapter {
+
+        //Configure Spring security's filter chain
+        @Override
+        public void configure(WebSecurity web) throws Exception {
+            web.ignoring().antMatchers("/resources/**");
+        }
+
+        //Configure how requests are secured by interceptors
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+            http.authorizeRequests()
+                    //order matters. First the most specific. Last anyRequest
+                    // pattrn "/users/**" match users/ and users/whatevere while pattern "users/*" only matches /users/whatever
+                    .antMatchers("/users/*").hasRole("USER")  //hasAnyRole()
+                    .antMatchers("static/**").permitAll()
+                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/enterNotesFlow").authenticated()
+                    .anyRequest().authenticated()
+            .and()
+                .formLogin(); //a login form is showed when no authenticated request
+
+            //Required to allow h2-console work
+            http.csrf().disable();
+            http.headers().frameOptions().disable();
+        }
+
+        //Configure user-details sevices
+        @Override
+        public void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth
+                    .inMemoryAuthentication()
+                    .withUser("user").password("user").roles("USER")
+                    .and().withUser("aaaaa").password("aaaaa").roles("USER")
+                    .and().withUser("admin").password("admin").roles("ADMIN")
+                    .and().withUser("both").password("both").roles("USER,ADMIN");
+        }
+
+    }
+
+ }
