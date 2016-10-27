@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -111,11 +112,18 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     }
 
     @Configuration
-    @Profile("h2")
+    @Profile("jdbc_auth")
     public class WebSecurityConfH2 extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        DataSource dataSource;
+        UserDetailsService userDetailsService;
+        //DataSource dataSource;
+
+        @Bean
+        public PasswordEncoder passEncoder() {
+            return new BCryptPasswordEncoder();
+        }
+
 
         //Configure Spring security's filter chain
         @Override
@@ -142,22 +150,22 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
             http.headers().frameOptions().disable();
         }
 
-        //Configure user-details sevices
+        //Configure user-details services
         @Override
         public void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth
-                    .jdbcAuthentication().dataSource(dataSource)
-                    .usersByUsernameQuery(
-                            "select username,password, enabled from users where username=?")
-                    .authoritiesByUsernameQuery(
-                            "select username, role from user_roles where username=?")
+//                    .jdbcAuthentication().dataSource(dataSource)
+//                    .usersByUsernameQuery(
+//                            "select username,password, enabled from users where username=?")
+//                    .authoritiesByUsernameQuery(
+//                            "select username, role from user_roles where username=?")
+                    .userDetailsService(userDetailsService)
                     .passwordEncoder(passEncoder());
         }
 
+//TODO: another configuration for login after registration. Take care of the loing in the webController
+        //TODO: modify the webFlow to enter once logged in
+
     }
 
-    @Bean
-    public PasswordEncoder passEncoder() {
-        return new BCryptPasswordEncoder();
-    }
  }

@@ -1,9 +1,5 @@
 package cat.tecnocampus.security;
 
-import cat.tecnocampus.databaseRepositories.NoteLabRepository;
-import cat.tecnocampus.domain.NoteLab;
-import cat.tecnocampus.domain.UserLab;
-import cat.tecnocampus.domain.UserLabBuilder;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +24,10 @@ public class UserSecurityRepository {
     }
 
     public UserSecurity findOne(String username) {
-        return jdbcOperations.queryForObject("Select * from users where username = ?", new Object[]{username}, new UserSecurityMapper());
+        UserSecurity u=jdbcOperations.queryForObject("Select * from users where username = ?", new Object[]{username}, new UserSecurityMapper());
+        u.addRoles(findRoles(username));
+
+        return u;
     }
 
     public void save(String username, String password) {
@@ -44,8 +43,6 @@ public class UserSecurityRepository {
         @Override
         public UserSecurity mapRow(ResultSet resultSet, int i) throws SQLException {
             UserSecurity user = new UserSecurity(resultSet.getString("username"), resultSet.getString("password"));
-            List<String> roles = findRoles(resultSet.getString("username"));
-            user.addRoles(roles);
             return user;
         }
     }

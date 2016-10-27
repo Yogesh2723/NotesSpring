@@ -20,10 +20,23 @@ public class SecurityService {
         this.userDetailsService = userDetailsService;
     }
 
-    public void login(String username) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+    public String findLoggedInUsername() {
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
+        if (userDetails instanceof UserDetails) {
+            return ((UserDetails)userDetails).getUsername();
+        }
 
+        return null;
+    }
+
+    public void login(String username, String password) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+
+        System.out.println("User details username: " + userDetails.getUsername() + " password: " + userDetails.getPassword() + " authorities: " + userDetails.getAuthorities().toArray()[0]);
+
+        System.out.println("going to authenticate...");
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         if (usernamePasswordAuthenticationToken.isAuthenticated()) {

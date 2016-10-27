@@ -34,7 +34,7 @@ public class UserSecurity {
     }
 
     public void addRoles(List<String> roles) {
-        roles.addAll(roles);
+        this.roles.addAll(roles);
     }
 
     public List<String> getRoles() {

@@ -2,20 +2,16 @@ package cat.tecnocampus.webControllers;
 
 import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.UserLab;
-import cat.tecnocampus.exceptions.UserLabNotFoundException;
 import cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException;
 import cat.tecnocampus.security.SecurityService;
 import cat.tecnocampus.security.UserSecurityRepository;
 import cat.tecnocampus.useCases.UserUseCases;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -123,8 +119,7 @@ public class UserUseCaseController {
         password = request.getParameter("password");
 
         userUseCases.registerUser(user);
-        userSecurityRepository.save(user.getUsername(),password);
-        securityService.login(user.getUsername());
+        loggingInUser(user.getUsername(), password);
 
         //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
 
@@ -135,15 +130,21 @@ public class UserUseCaseController {
         return "redirect:users/{username}"; //in this way username is scaped and dangerous chars changed
     }
 
-    @GetMapping("hello")
+    @GetMapping("loggedInUser")
     public String getAuthenticatedUser(RedirectAttributes redirectAttributes) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName(); //get logged in username
+        String name = securityService.findLoggedInUsername();
 
         redirectAttributes.addAttribute("username", name);
         return "redirect:users/{username}";
     }
 
+    private void loggingInUser(String username, String password) {
+        //saving to database
+        userSecurityRepository.save(username,password);
+
+        //actually logging in
+        securityService.login(username,password);
+    }
 
     /*
     This method is called whenever a UserLabUsernameAlreadyExistsException is signalled from any of the
