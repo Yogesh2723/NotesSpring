@@ -25,6 +25,8 @@ public class UserLab implements Serializable{
 
     private Map<String,NoteLab> noteLabs;
 
+    private String password;
+
     public UserLab() {
         noteLabs = new HashMap<>();
     }
@@ -121,5 +123,13 @@ public class UserLab implements Serializable{
 
     public boolean existsNote(String title) {
         return noteLabs.containsKey(title);
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

@@ -4,6 +4,8 @@ import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.UserLab;
 import cat.tecnocampus.exceptions.UserLabNotFoundException;
 import cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException;
+import cat.tecnocampus.security.SecurityService;
+import cat.tecnocampus.security.UserSecurityRepository;
 import cat.tecnocampus.useCases.UserUseCases;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,9 +29,13 @@ import java.util.List;
 @RequestMapping("/")
 public class UserUseCaseController {
     private UserUseCases userUseCases;
+    private SecurityService securityService;
+    private UserSecurityRepository userSecurityRepository;
 
-    public UserUseCaseController(UserUseCases userUseCases) {
+    public UserUseCaseController(UserUseCases userUseCases, UserSecurityRepository userSecurityRepository, SecurityService securityService) {
         this.userUseCases = userUseCases;
+        this.securityService = securityService;
+        this.userSecurityRepository = userSecurityRepository;
     }
 
     //same as @RequestMapping(path="notes", method= RequestMethod.GET)
@@ -116,8 +122,9 @@ public class UserUseCaseController {
         request.setAttribute("username", user.getUsername());
         password = request.getParameter("password");
 
-        System.out.println("password = " + password);
-        userUseCases.registerUser(user, password);
+        userUseCases.registerUser(user);
+        userSecurityRepository.save(user.getUsername(),password);
+        securityService.login(user.getUsername());
 
         //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
 

@@ -21,12 +21,10 @@ public class UserLabRepository {
 
     private JdbcOperations jdbcOperations;
     private NoteLabRepository noteLabRepository;
-    private PasswordEncoder passwordEncoder;
 
-    public UserLabRepository(JdbcOperations jdbcOperations, NoteLabRepository noteLabRepository, PasswordEncoder passwordEncoder) {
+    public UserLabRepository(JdbcOperations jdbcOperations, NoteLabRepository noteLabRepository) {
         this.jdbcOperations = jdbcOperations;
         this.noteLabRepository = noteLabRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserLab> findAll() {
@@ -46,12 +44,6 @@ public class UserLabRepository {
         noteLabRepository.saveUserNotes(userLab);
 
         return userUpdate;
-    }
-
-    public void saveAuthentication(String username, String password) {
-        // inserting user with encoded password
-        jdbcOperations.update("insert into users (username, password) values(?, ?)", username, passwordEncoder.encode(password));
-        jdbcOperations.update("insert into user_roles (username, role) values(?, 'ROLE_USER')", username);
     }
 
     private final class UserLabMapper implements RowMapper<UserLab> {
