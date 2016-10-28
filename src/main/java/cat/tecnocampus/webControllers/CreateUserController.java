@@ -19,7 +19,7 @@ import javax.validation.Valid;
 /**
  * Created by roure on 28/10/2016.
  */
-@Profile("jdbc_auth")
+@Profile({"jdbc_auth","memory"})
 @Controller
 @RequestMapping("/")
 public class CreateUserController {
