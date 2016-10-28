@@ -116,8 +116,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public class WebSecurityConfH2 extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        UserDetailsService userDetailsService;
-        //DataSource dataSource;
+        DataSource dataSource;
 
         @Bean
         public PasswordEncoder passEncoder() {
@@ -135,7 +134,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-                    //order matters. First the most specific. Last anyRequest
+                    //Order of matchers matters. First the most specific. Last anyRequest
                     // pattrn "/users/**" match users/ and users/whatevere while pattern "users/*" only matches /users/whatever
                     .antMatchers("/users/*").hasRole("USER")  //hasAnyRole()
                     .antMatchers("/static/**", "/createuser/**").permitAll()
@@ -154,18 +153,61 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         @Override
         public void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth
-//                    .jdbcAuthentication().dataSource(dataSource)
-//                    .usersByUsernameQuery(
-//                            "select username,password, enabled from users where username=?")
-//                    .authoritiesByUsernameQuery(
-//                            "select username, role from user_roles where username=?")
+                    .jdbcAuthentication().dataSource(dataSource)
+                    .usersByUsernameQuery(
+                            "select username,password, enabled from users where username=?")
+                    .authoritiesByUsernameQuery(
+                            "select username, role from user_roles where username=?")
+                    .passwordEncoder(passEncoder());
+        }
+    }
+
+    @Configuration
+    @Profile("custom_jdbc_auth")
+    public class WebSecurityConfOwnAuth extends WebSecurityConfigurerAdapter {
+
+        @Autowired
+        UserDetailsService userDetailsService;
+
+        @Bean
+        public PasswordEncoder passEncoder() {
+            return new BCryptPasswordEncoder();
+        }
+
+
+        //Configure Spring security's filter chain
+        @Override
+        public void configure(WebSecurity web) throws Exception {
+            web.ignoring().antMatchers("/resources/**");
+        }
+
+        //Configure how requests are secured by interceptors
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+            http.authorizeRequests()
+                    //Order of matchers matters. First the most specific. Last anyRequest
+                    // pattrn "/users/**" match users/ and users/whatevere while pattern "users/*" only matches /users/whatever
+                    .antMatchers("/users/*").hasRole("USER")  //hasAnyRole()
+                    .antMatchers("/static/**", "/createuser/**").permitAll()
+                    .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/enterNotesFlow").authenticated()
+                    .anyRequest().authenticated()
+                    .and()
+                    .formLogin(); //a login form is showed when no authenticated request
+
+            //Required to allow h2-console work
+            http.csrf().disable();
+            http.headers().frameOptions().disable();
+        }
+
+        //Configure user-details services
+        @Override
+        public void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth
                     .userDetailsService(userDetailsService)
                     .passwordEncoder(passEncoder());
         }
-
-//TODO: another configuration for login after registration. Take care of the loing in the webController
         //TODO: modify the webFlow to enter once logged in
-
     }
 
- }
+}

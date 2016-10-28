@@ -25,13 +25,9 @@ import java.util.List;
 @RequestMapping("/")
 public class UserUseCaseController {
     private UserUseCases userUseCases;
-    private SecurityService securityService;
-    private UserSecurityRepository userSecurityRepository;
 
-    public UserUseCaseController(UserUseCases userUseCases, UserSecurityRepository userSecurityRepository, SecurityService securityService) {
+    public UserUseCaseController(UserUseCases userUseCases) {
         this.userUseCases = userUseCases;
-        this.securityService = securityService;
-        this.userSecurityRepository = userSecurityRepository;
     }
 
     //same as @RequestMapping(path="notes", method= RequestMethod.GET)
@@ -100,50 +96,6 @@ public class UserUseCaseController {
         model.addAttribute("user", user);
 
         return "userNotes";
-    }
-
-    @GetMapping("createuser")
-    public String createUser(Model model) {
-        model.addAttribute(new UserLab());
-        return "userform";
-    }
-
-    @PostMapping("createuser")
-    public String processCreateUser(@Valid UserLab user, Errors errors, Model model,
-                                    RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        String password;
-
-        if (errors.hasErrors()) return "userform";
-
-        request.setAttribute("username", user.getUsername());
-        password = request.getParameter("password");
-
-        userUseCases.registerUser(user);
-        loggingInUser(user.getUsername(), password);
-
-        //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
-
-        redirectAttributes.addAttribute("username", user.getUsername());
-        redirectAttributes.addAttribute("pepe", "pepe"); // this attribute shows in the calling url as a parameter
-        redirectAttributes.addFlashAttribute("userLab", user);
-
-        return "redirect:users/{username}"; //in this way username is scaped and dangerous chars changed
-    }
-
-    @GetMapping("loggedInUser")
-    public String getAuthenticatedUser(RedirectAttributes redirectAttributes) {
-        String name = securityService.findLoggedInUsername();
-
-        redirectAttributes.addAttribute("username", name);
-        return "redirect:users/{username}";
-    }
-
-    private void loggingInUser(String username, String password) {
-        //saving to database
-        userSecurityRepository.save(username,password);
-
-        //actually logging in
-        securityService.login(username,password);
     }
 
     /*
