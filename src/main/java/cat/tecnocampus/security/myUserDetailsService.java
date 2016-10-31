@@ -23,12 +23,8 @@ public class myUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UserLabNotFoundException {
-        System.out.println("myUserDetailsService.loadUserByUsername");
 
         UserSecurity user = userSecurityRepository.findOne(username);
-
-        System.out.println("User details username: " + user.getUsername() + " password: " + user.getPassword());
-
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role)));
