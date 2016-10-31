@@ -32,14 +32,10 @@ public class SecurityService {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
 
-        System.out.println("User details username: " + userDetails.getUsername() + " password: " + userDetails.getPassword() + " authorities: " + userDetails.getAuthorities().toArray()[0]);
-
-        System.out.println("going to authenticate...");
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         if (usernamePasswordAuthenticationToken.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            System.out.println(String.format("Auto login %s successfully!", username));
         }
 
     }
