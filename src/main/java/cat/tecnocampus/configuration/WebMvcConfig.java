@@ -135,7 +135,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         public void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
                     //Order of matchers matters. First the most specific. Last anyRequest
-                    // pattrn "/users/**" match users/ and users/whatevere while pattern "users/*" only matches /users/whatever
+                    // pattrn "/users/**" match users/ and users/whatever while pattern "users/*" only matches /users/whatever
                     .antMatchers("/users/*").hasRole("USER")  //hasAnyRole()
                     .antMatchers("/static/**", "/createuser/**").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
@@ -185,15 +185,23 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-                    //Order of matchers matters. First the most specific. Last anyRequest
-                    // pattrn "/users/**" match users/ and users/whatevere while pattern "users/*" only matches /users/whatever
-                    .antMatchers("/users/*").hasRole("USER")  //hasAnyRole()
+                    .antMatchers("users/").hasRole("USER")
+                    .antMatchers("/users/{userId}/**").access("@webSecurity.checkUserId(authentication,#userId)")
                     .antMatchers("/static/**", "/createuser/**").permitAll()
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers("/enterNotesFlow").authenticated()
                     .anyRequest().authenticated()
-                    .and()
-                    .formLogin(); //a login form is showed when no authenticated request
+                .and()
+                    .formLogin()
+                        //.loginPage("/myLogin"); //a login form is showed when no authenticated request
+                .and()
+                    .rememberMe()
+                        .tokenValiditySeconds(2419200)
+                        .key("notes")
+                .and()
+                    .logout()
+                        .logoutSuccessUrl("/byebye"); //where to go when logout is successful
+                        //.logoutUrl("logoutpage") // logout page
 
             //Required to allow h2-console work
             http.csrf().disable();
