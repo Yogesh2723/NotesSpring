@@ -6,28 +6,48 @@
 
     <var name="userLab" class="cat.tecnocampus.domain.UserLab" />
 
+    <decision-state id="isLogged">
+        <if test="securityService.findLoggedInUsername().equals('anonymous')"
+        then="registerUser"
+        else ="lookupUser" />
+    </decision-state>
 
     <view-state id="welcome" view="enterNotesFlow/identifyUserFlow/welcome">
         <transition on="userEntered" to="lookupUser"/>
     </view-state>
 
     <action-state id="lookupUser">
-        <evaluate expression="userUseCases.getUser(requestParameters.username)"
+        <evaluate expression="userUseCases.getUser(securityService.findLoggedInUsername())"
                   result="userLab"/>
         <transition on-exception="cat.tecnocampus.exceptions.UserLabNotFoundException" to="registerUser"/>
         <transition to="userReady"/>
     </action-state>
 
     <view-state id="registerUser" model="userLab" view="enterNotesFlow/identifyUserFlow/userform">
-        <on-entry>
-            <evaluate expression="userLab.username=requestParameters.username"/>
-        </on-entry>
         <transition on="usernameEntered" to="saveUser"/>
+        <transition on="login" to="loginUser"/>
     </view-state>
 
     <action-state id="saveUser">
         <evaluate expression="userUseCases.saveUser(userLab)"/>
+        <evaluate expression="userSecurityRepository.save(requestParameters.username,requestParameters.password)"/>
+        <evaluate expression="securityService.login(requestParameters.username,requestParameters.password)"/>
+        <transition to="saveSecurityUser"/>
+    </action-state>
+
+    <action-state id="saveSecurityUser">
+        <evaluate expression="userSecurityRepository.save(requestParameters.username,requestParameters.password)"/>
+        <transition to="loginUser2"/>
+    </action-state>
+
+    <action-state id="loginUser2">
+        <evaluate expression="securityService.login(requestParameters.username,requestParameters.password)"/>
         <transition to="userReady"/>
+    </action-state>
+
+    <action-state id="loginUser">
+        <evaluate expression="securityService.login(requestParameters.username,requestParameters.password)"/>
+        <transition to="lookupUser"/>
     </action-state>
 
     <end-state id="userReady">

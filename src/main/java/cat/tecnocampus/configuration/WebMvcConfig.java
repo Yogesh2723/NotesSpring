@@ -187,7 +187,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
             http.authorizeRequests()
                     .antMatchers("users/").hasRole("USER")
                     .antMatchers("/users/{userId}/**").access("@webSecurity.checkUserId(authentication,#userId)")
-                    .antMatchers("/static/**", "/createuser/**").permitAll()
+                    .antMatchers("/static/**", "/createuser/**", "/loggedInUser").permitAll()   //, "/enterNotesFlow/**"
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers("/enterNotesFlow").authenticated()
                     .anyRequest().authenticated()

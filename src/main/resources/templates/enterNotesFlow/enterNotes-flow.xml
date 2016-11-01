@@ -4,6 +4,8 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
 
+    <secured attributes="ROLE_USER"/>
+
     <var name="userLab" class="cat.tecnocampus.domain.UserLab" />
     <var name="bagNoteLab" class="cat.tecnocampus.domain.BagNoteLab" />
 
