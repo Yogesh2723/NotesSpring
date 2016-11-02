@@ -22,13 +22,13 @@
     </action-state>
 
     <view-state id="registerUser" model="userLab" view="enterNotesFlow/identifyUserFlow/userform">
-        <transition on-exception="cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException" to="registerUser"/>
         <transition on="usernameEntered" to="saveUser"/>
         <transition on="login" to="loginUser"/>
     </view-state>
 
     <action-state id="saveUser">
         <evaluate expression="userUseCases.registerUser(userLab)"/>
+        <transition on-exception="cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException" to="registerUser"/>
         <transition to="saveSecurityUser"/>
     </action-state>
 
