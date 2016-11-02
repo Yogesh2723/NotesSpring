@@ -4,7 +4,7 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
 
-    <secured attributes="ROLE_ANONYMOUS"/>
+    <secured attributes="ROLE_ANONYMOUS, ROLE_USER" match="any"/>
 
     <var name="userLab" class="cat.tecnocampus.domain.UserLab" />
 

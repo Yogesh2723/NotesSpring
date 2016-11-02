@@ -66,6 +66,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>12.1.0.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
