@@ -62,7 +62,7 @@ public class NotesSpringApplication {
 					for (int i = 0; i < 5; i++) {
 						u.addNote(new NoteLab("hola " + i, "content " + i, LocalDateTime.now(), LocalDateTime.now()));
 					}
-					userUseCases.saveUser(u);
+					userUseCases.registerUser(u);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

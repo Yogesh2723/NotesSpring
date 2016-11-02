@@ -38,19 +38,15 @@ public class UserUseCases {
         return userLab;
     }
 
+    //The @Transactiona annotation states that saveUser is a transaction. So ,if a unchecked exception is signaled
+    // (and not cached) during the saveUser method the transaction is going to rollback
+    @Transactional
     public void registerUser(UserLab userLab) {
         try {
             userLabRepository.save(userLab);
         } catch (DuplicateKeyException e) {
             throw new UserLabUsernameAlreadyExistsException("Username: " + userLab.getUsername() + " already exists");
         }
-    }
-
-    //The @Transactiona annotation states that saveUser is a transaction. So ,if a unchecked exception is signaled
-    // (and not cached) during the saveUser method the transaction is going to rollback
-    @Transactional
-    public void saveUser(UserLab user) {
-          userLabRepository.save(user);
     }
 
     public NoteLab addUserNote(UserLab userLab, String title, String contents) {
