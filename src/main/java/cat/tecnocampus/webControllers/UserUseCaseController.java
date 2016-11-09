@@ -22,29 +22,29 @@ import java.util.List;
  * Created by roure on 05/10/2016.
  */
 @Controller
-@RequestMapping("/")
 public class UserUseCaseController {
-    private UserUseCases userUseCases;
+	
+    private final UserUseCases userUseCases;
 
     public UserUseCaseController(UserUseCases userUseCases) {
         this.userUseCases = userUseCases;
     }
 
-    //same as @RequestMapping(path="notes", method= RequestMethod.GET)
-    @GetMapping("notes")
+    //same as @RequestMapping(path="/notes", method= RequestMethod.GET)
+    @GetMapping("/notes")
     public List<NoteLab> listNotes() {
         return userUseCases.getAllNotes();
     }
 
 /*
-    @GetMapping("notes")
+    @GetMapping("/notes")
     public void listNotes(Model model) {
         model.addAttribute("noteLabList", userUseCases.getAllNotes());
     }
 */
 
 /*
-    @GetMapping("notes")
+    @GetMapping("/notes")
     public String listNotes(Model model) {
         model.addAttribute("noteLabList", userUseCases.getAllNotes());
         return "notes";
@@ -52,7 +52,7 @@ public class UserUseCaseController {
 */
 
 /*
-    @GetMapping("notes")
+    @GetMapping("/notes")
     public Model listNotes(Model model) {
         model.addAttribute("noteLabList", userUseCases.getAllNotes());
         return model;
@@ -60,7 +60,7 @@ public class UserUseCaseController {
 */
 
 /*
-    @GetMapping("notes")
+    @GetMapping("/notes")
     public ModelAndView listNotes(ModelAndView model) {
         model.addObject("noteLabList", userUseCases.getAllNotes());
         model.setViewName("notes");
@@ -68,18 +68,18 @@ public class UserUseCaseController {
     }
 */
 
-    @GetMapping("users")
+    @GetMapping("/users")
     public List<UserLab> listUsers() {
         return userUseCases.getUsers();
     }
 
-    @GetMapping("usersReqParam")
+    @GetMapping("/usersReqParam")
     public String showUserRequestParameter(@RequestParam String username, Model model) {
         model.addAttribute("userLab", userUseCases.getUser(username));
         return "showUser";
     }
     
-    @GetMapping("users/{user}")
+    @GetMapping("/users/{user}")
     public String showUser(@PathVariable("user") String user, Model model) {
         //we're going to ask to UserUseCases for a user only if the model
         //doesn't already carry one (from a redirect)
@@ -89,7 +89,7 @@ public class UserUseCaseController {
         return "showUser";
     }
 
-    @GetMapping("users/{user}/notes")
+    @GetMapping("/users/{user}/notes")
     public String listUserNotes(@PathVariable String user, Model model) {
 
         model.addAttribute("userNotesList", userUseCases.getUserNotes(user));

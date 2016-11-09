@@ -1,9 +1,8 @@
 package cat.tecnocampus.webControllers;
 
-import cat.tecnocampus.domain.UserLab;
-import cat.tecnocampus.security.SecurityService;
-import cat.tecnocampus.security.UserSecurityRepository;
-import cat.tecnocampus.useCases.UserUseCases;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,31 +12,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import cat.tecnocampus.domain.UserLab;
+import cat.tecnocampus.security.UserSecurityRepository;
+import cat.tecnocampus.useCases.UserUseCases;
 
 /**
  * Created by roure on 28/10/2016.
  */
 @Profile({"jdbc_auth","memory"})
 @Controller
-@RequestMapping("/")
+@RequestMapping("/createuser")
 public class CreateUserController {
-    private UserUseCases userUseCases;
-    private UserSecurityRepository userSecurityRepository;
+	
+    private final UserUseCases userUseCases;
+    
+    private final UserSecurityRepository userSecurityRepository;
 
     public CreateUserController(UserUseCases userUseCases, UserSecurityRepository userSecurityRepository) {
         this.userUseCases = userUseCases;
         this.userSecurityRepository = userSecurityRepository;
     }
 
-    @GetMapping("createuser")
+    @GetMapping
     public String createUser(Model model) {
         model.addAttribute(new UserLab());
         return "userform";
     }
 
-    @PostMapping("createuser")
+    @PostMapping
     public String processCreateUser(@Valid UserLab user, Errors errors, Model model,
                                     RedirectAttributes redirectAttributes, HttpServletRequest request) {
         String password;

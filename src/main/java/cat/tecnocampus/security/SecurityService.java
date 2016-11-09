@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SecurityService {
-    private AuthenticationManager authenticationManager;
-    private UserDetailsService userDetailsService;
+	
+    private final AuthenticationManager authenticationManager;
+    
+    private final UserDetailsService userDetailsService;
 
     public SecurityService(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;

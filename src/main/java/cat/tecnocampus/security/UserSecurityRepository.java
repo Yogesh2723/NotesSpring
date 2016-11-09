@@ -15,8 +15,9 @@ import java.util.List;
 @Repository
 public class UserSecurityRepository {
 
-    private JdbcOperations jdbcOperations;
-    private PasswordEncoder passwordEncoder;
+    private final JdbcOperations jdbcOperations;
+    
+    private final PasswordEncoder passwordEncoder;
 
     public UserSecurityRepository(JdbcOperations jdbcOperations, PasswordEncoder passwordEncoder) {
         this.jdbcOperations = jdbcOperations;
@@ -24,7 +25,7 @@ public class UserSecurityRepository {
     }
 
     public UserSecurity findOne(String username) {
-        UserSecurity u=jdbcOperations.queryForObject("Select * from users where username = ?", new Object[]{username}, new UserSecurityMapper());
+        UserSecurity u = jdbcOperations.queryForObject("Select * from users where username = ?", new UserSecurityMapper(), username);
         u.addRoles(findRoles(username));
 
         return u;
@@ -36,7 +37,9 @@ public class UserSecurityRepository {
     }
 
     private List<String> findRoles(String username) {
-        return jdbcOperations.query("Select * from user_roles where username = ?", new Object[]{username}, new RoleMapper());
+        return jdbcOperations.query("Select * from user_roles where username = ?", 
+        							(rs,i) -> rs.getString("role"), 
+        							username);
     }
 
     private final class UserSecurityMapper implements RowMapper<UserSecurity> {
@@ -46,13 +49,4 @@ public class UserSecurityRepository {
             return user;
         }
     }
-
-    private final class RoleMapper implements RowMapper<String> {
-        @Override
-        public String mapRow(ResultSet resultSet, int i) throws SQLException {
-            return resultSet.getString("role");
-        }
-    }
-
-
 }

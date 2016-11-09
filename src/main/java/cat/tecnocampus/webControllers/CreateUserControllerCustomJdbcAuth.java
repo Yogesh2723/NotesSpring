@@ -1,31 +1,33 @@
 package cat.tecnocampus.webControllers;
 
-import cat.tecnocampus.domain.UserLab;
-import cat.tecnocampus.security.SecurityService;
-import cat.tecnocampus.security.UserSecurityRepository;
-import cat.tecnocampus.useCases.UserUseCases;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import cat.tecnocampus.domain.UserLab;
+import cat.tecnocampus.security.SecurityService;
+import cat.tecnocampus.security.UserSecurityRepository;
+import cat.tecnocampus.useCases.UserUseCases;
 
 /**
  * Created by roure on 28/10/2016.
  */
 @Profile("custom_jdbc_auth")
 @Controller
-@RequestMapping("/")
 public class CreateUserControllerCustomJdbcAuth {
-    private UserUseCases userUseCases;
-    private SecurityService securityService;
-    private UserSecurityRepository userSecurityRepository;
+	
+    private final UserUseCases userUseCases;
+    
+    private final SecurityService securityService;
+    
+    private final UserSecurityRepository userSecurityRepository;
 
     public CreateUserControllerCustomJdbcAuth(UserUseCases userUseCases, SecurityService securityService, UserSecurityRepository userSecurityRepository) {
         this.userUseCases = userUseCases;
@@ -33,13 +35,13 @@ public class CreateUserControllerCustomJdbcAuth {
         this.userSecurityRepository = userSecurityRepository;
     }
 
-    @GetMapping("createuser")
+    @GetMapping("/createuser")
     public String createUser(Model model) {
         model.addAttribute(new UserLab());
         return "userform";
     }
 
-    @PostMapping("createuser")
+    @PostMapping("/createuser")
     public String processCreateUser(@Valid UserLab user, Errors errors, Model model,
                                     RedirectAttributes redirectAttributes, HttpServletRequest request) {
         String password;
@@ -62,7 +64,7 @@ public class CreateUserControllerCustomJdbcAuth {
         return "redirect:/users/{username}"; //in this way username is escaped and dangerous chars changed
     }
 
-    @GetMapping("loggedInUser")
+    @GetMapping("/loggedInUser")
     public String getAuthenticatedUser(Model model) {
         String name = securityService.findLoggedInUsername();
 

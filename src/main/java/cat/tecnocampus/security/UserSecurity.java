@@ -7,9 +7,12 @@ import java.util.List;
  * Created by roure on 27/10/2016.
  */
 public class UserSecurity {
-    String username;
-    String password;
-    List<String> roles;
+	
+    private String username;
+    
+    private String password;
+    
+    private List<String> roles;
 
     public UserSecurity(String username, String password) {
         this.username = username;

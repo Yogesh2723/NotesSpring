@@ -16,7 +16,7 @@ import java.util.Set;
  * Created by roure on 27/10/2016.
  */
 @Service
-public class myUserDetailsService implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserSecurityRepository userSecurityRepository;
