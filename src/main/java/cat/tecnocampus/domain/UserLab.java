@@ -1,16 +1,21 @@
 package cat.tecnocampus.domain;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 /**
  * Created by roure on 19/09/2016.
  */
 public class UserLab implements Serializable{
 
-    @NotNull
     @Size(min=5, max=15)
     private String username;
 
@@ -20,7 +25,7 @@ public class UserLab implements Serializable{
     @Size(min=5, max=15)
     private String secondName;
 
-    @Size(min=5, max=15)
+    @Email
     private String email;
 
     private Map<String,NoteLab> noteLabs;
@@ -32,7 +37,7 @@ public class UserLab implements Serializable{
     }
 
     public UserLab(String username, String name, String secondname, String email) {
-        this.noteLabs = new HashMap<>();
+        this();
         this.setUsername(username);
         this.setName(name);
         this.setSecondName(secondname);
@@ -76,7 +81,7 @@ public class UserLab implements Serializable{
     }
 
     public List<NoteLab> getNotesAsList() {
-        Collection coll = noteLabs.values();
+        Collection<NoteLab> coll = noteLabs.values();
         if (coll instanceof List) {
             return (List) coll;
         }

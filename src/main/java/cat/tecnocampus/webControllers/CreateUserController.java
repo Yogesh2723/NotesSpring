@@ -1,6 +1,5 @@
 package cat.tecnocampus.webControllers;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.context.annotation.Profile;
@@ -41,24 +40,23 @@ public class CreateUserController {
 
     @PostMapping
     public String processCreateUser(@Valid UserLab user, Errors errors, Model model,
-                                    RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        String password;
+                                    RedirectAttributes redirectAttributes) {
 
-        if (errors.hasErrors()) return "userform";
-
-        request.setAttribute("username", user.getUsername());
-        password = request.getParameter("password");
+        if (errors.hasErrors()) { 
+        	return "userform";
+        }
 
         userUseCases.registerUser(user);
 
-        //saving to authoritation database
-        userSecurityRepository.save(user.getUsername(),password);
-
-        //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
+        //saving to authorization database
+        userSecurityRepository.save(user.getUsername(), user.getPassword());
 
         redirectAttributes.addAttribute("username", user.getUsername());
         redirectAttributes.addAttribute("pepe", "pepe"); // this attribute shows in the calling url as a parameter
         redirectAttributes.addFlashAttribute("userLab", user);
+
+        
+        //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
 
         return "redirect:/users/{username}"; //in this way username is scaped and dangerous chars changed
     }

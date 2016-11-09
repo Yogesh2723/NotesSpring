@@ -1,5 +1,13 @@
 package cat.tecnocampus.useCases;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import cat.tecnocampus.databaseRepositories.NoteLabRepository;
 import cat.tecnocampus.databaseRepositories.UserLabRepository;
 import cat.tecnocampus.domain.BagNoteLab;
@@ -8,14 +16,6 @@ import cat.tecnocampus.domain.NoteLabBuilder;
 import cat.tecnocampus.domain.UserLab;
 import cat.tecnocampus.exceptions.UserLabNotFoundException;
 import cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Created by roure on 20/09/2016.
@@ -42,7 +42,7 @@ public class UserUseCases {
         try {
             userLabRepository.save(userLab);
         } catch (DuplicateKeyException e) {
-            throw new UserLabUsernameAlreadyExistsException("Username: " + userLab.getUsername() + " already exists");
+            throw new UserLabUsernameAlreadyExistsException(userLab.getUsername());
         }
     }
 

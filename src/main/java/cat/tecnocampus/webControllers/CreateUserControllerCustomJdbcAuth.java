@@ -1,12 +1,13 @@
 package cat.tecnocampus.webControllers;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -42,39 +43,35 @@ public class CreateUserControllerCustomJdbcAuth {
     }
 
     @PostMapping("/createuser")
-    public String processCreateUser(@Valid UserLab user, Errors errors, Model model,
-                                    RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        String password;
-
-        if (errors.hasErrors()) return "userform";
-
-        request.setAttribute("username", user.getUsername());
-        password = request.getParameter("password");
+    public String processCreateUser(@Valid UserLab user, BindingResult errors, Model model,
+                                    RedirectAttributes redirectAttributes) {
+        if (errors.hasErrors()) {
+        	return "userform";
+        }
 
         userUseCases.registerUser(user);
 
-        loggingInUser(user.getUsername(), password);
-
-        //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
-
+        loggingInUser(user.getUsername(), user.getPassword());
+        
         redirectAttributes.addAttribute("username", user.getUsername());
         redirectAttributes.addAttribute("pepe", "pepe"); // this attribute shows in the calling url as a parameter
         redirectAttributes.addFlashAttribute("userLab", user);
 
+        //return "redirect:users/" + user.getUsername(); //this is dangerous because username can contain a dangerous string (sql injection)
+        
         return "redirect:/users/{username}"; //in this way username is escaped and dangerous chars changed
     }
 
     @GetMapping("/loggedInUser")
-    public String getAuthenticatedUser(Model model) {
-        String name = securityService.findLoggedInUsername();
-
-        model.addAttribute("username", name);
+    public String getAuthenticatedUser(@AuthenticationPrincipal User user, Model model) {
+        
+    	model.addAttribute("username", user.getUsername());
         return "hello";
     }
 
     private void loggingInUser(String username, String password) {
         //saving to authoritation database
-        userSecurityRepository.save(username,password);
+        userSecurityRepository.save(username, password);
 
         //actually logging in
         securityService.login(username,password);
