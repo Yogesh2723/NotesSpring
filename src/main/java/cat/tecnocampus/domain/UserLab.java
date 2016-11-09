@@ -1,6 +1,10 @@
 package cat.tecnocampus.domain;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by roure on 19/09/2016.
@@ -12,7 +16,7 @@ public class UserLab {
     private String secondName;
     private String email;
 
-    private Map<String,NoteLab> noteLabs;
+    private Map<String, NoteLab> noteLabs;
 
     public UserLab() {
         noteLabs = new HashMap<>();
@@ -63,7 +67,8 @@ public class UserLab {
     }
 
     public List<NoteLab> getNotesAsList() {
-        Collection coll = noteLabs.values();
+        Collection<NoteLab> coll = noteLabs.values();
+        
         if (coll instanceof List) {
             return (List) coll;
         }
@@ -84,7 +89,7 @@ public class UserLab {
         if (!noteLabs.containsKey(noteLab.getTitle())) {
             noteLabs.put(noteLab.getTitle(),noteLab);
         } else {
-            throw new RuntimeException("Note's title is repeated");
+            throw new IllegalArgumentException("Note's title is repeated");
         }
 
         return noteLab;

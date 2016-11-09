@@ -18,8 +18,10 @@ import java.time.LocalDateTime;
  */
 @Service
 public class UserUseCases {
-    private NoteLabRepository noteLabRepository;
-    private UserLabRepository userLabRepository;
+	
+    private final NoteLabRepository noteLabRepository;
+    
+    private final UserLabRepository userLabRepository;
 
     public UserUseCases(NoteLabRepository noteLabRepository, UserLabRepository userLabRepository) {
         this.noteLabRepository = noteLabRepository;
