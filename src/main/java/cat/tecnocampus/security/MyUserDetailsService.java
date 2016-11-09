@@ -1,16 +1,16 @@
 package cat.tecnocampus.security;
 
-import cat.tecnocampus.exceptions.UserLabNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by roure on 27/10/2016.
@@ -18,17 +18,29 @@ import java.util.Set;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserSecurityRepository userSecurityRepository;
+    private final UserSecurityRepository userSecurityRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UserLabNotFoundException {
+    
+    public MyUserDetailsService(UserSecurityRepository userSecurityRepository) {
+		this.userSecurityRepository = userSecurityRepository;
+	}
 
-        UserSecurity user = userSecurityRepository.findOne(username);
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role)));
+	@Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    	
+    	UserSecurity user = null;
+        
+    	try {
+    		user = userSecurityRepository.findOne(username);
+    	} catch(IncorrectResultSizeDataAccessException e) {
+    		throw new UsernameNotFoundException("User " + username + " not found");
+    	}
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+        Set<GrantedAuthority> grantedAuthorities = user.getRoles().stream()
+                                                                  .map(SimpleGrantedAuthority::new)
+                                                                  .collect(Collectors.toSet());
+
+        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }
