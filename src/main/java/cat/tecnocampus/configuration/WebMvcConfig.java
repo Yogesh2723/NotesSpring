@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
+import org.springframework.webflow.executor.FlowExecutor;
 import org.springframework.webflow.mvc.servlet.FlowHandlerAdapter;
 import org.springframework.webflow.mvc.servlet.FlowHandlerMapping;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -17,35 +19,21 @@ import org.thymeleaf.spring4.view.FlowAjaxThymeleafView;
  */
 
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
-
-    @Autowired
-    private WebFlowConfig webFlowConfig;
-
-    @Autowired
-    private SpringTemplateEngine springTemplateEngine;
+public class WebMvcConfig {
 
     @Bean
-    public FlowHandlerMapping flowHandlerMapping() {
+    public FlowHandlerMapping flowHandlerMapping(FlowDefinitionRegistry flowRegistry) {
         FlowHandlerMapping handlerMapping = new FlowHandlerMapping();
+        handlerMapping.setFlowRegistry(flowRegistry);
         handlerMapping.setOrder(-1);
-        handlerMapping.setFlowRegistry(this.webFlowConfig.flowRegistry());
         return handlerMapping;
     }
 
     @Bean
-    public FlowHandlerAdapter flowHandlerAdapter() {
+    public FlowHandlerAdapter flowHandlerAdapter(FlowExecutor flowExecutor) {
         FlowHandlerAdapter handlerAdapter = new FlowHandlerAdapter();
-        handlerAdapter.setFlowExecutor(this.webFlowConfig.flowExecutor());
+        handlerAdapter.setFlowExecutor(flowExecutor);
         handlerAdapter.setSaveOutputToFlashScopeOnRedirect(true);
         return handlerAdapter;
-    }
-
-    @Bean
-    public AjaxThymeleafViewResolver ajaxThymeleafViewResolver() {
-        AjaxThymeleafViewResolver viewResolver = new AjaxThymeleafViewResolver();
-        viewResolver.setViewClass(FlowAjaxThymeleafView.class);
-        viewResolver.setTemplateEngine(springTemplateEngine);
-        return viewResolver;
     }
 }
