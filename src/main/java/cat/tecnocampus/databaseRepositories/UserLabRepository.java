@@ -3,8 +3,7 @@ package cat.tecnocampus.databaseRepositories;
 import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.UserLab;
 import cat.tecnocampus.domain.UserLabBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,28 +17,29 @@ import java.util.List;
 @Repository
 public class UserLabRepository {
 
-    private JdbcOperations jdbcOperations;
-    private NoteLabRepository noteLabRepository;
+    private final JdbcTemplate jdbcTemplate;
+    
+    private final NoteLabRepository noteLabRepository;
 
-    public UserLabRepository(JdbcOperations jdbcOperations, NoteLabRepository noteLabRepository) {
-        this.jdbcOperations = jdbcOperations;
+    public UserLabRepository(JdbcTemplate jdbcTemplate, NoteLabRepository noteLabRepository) {
+        this.jdbcTemplate = jdbcTemplate;
         this.noteLabRepository = noteLabRepository;
     }
 
     public List<UserLab> findAll() {
-        return jdbcOperations.query("Select * from user_lab", new UserLabMapper());
+        return jdbcTemplate.query("Select * from user_lab", new UserLabMapper());
     }
 
     public List<UserLab> findAllLazy() {
-        return jdbcOperations.query("Select * from user_lab", new UserLabMapperLazy());
+        return jdbcTemplate.query("Select * from user_lab", (rs, i) -> mapUserLab(rs));
     }
 
     public UserLab findOne(String userName) {
-        return jdbcOperations.queryForObject("Select * from user_lab where username = ?", new Object[]{userName}, new UserLabMapper());
+        return jdbcTemplate.queryForObject("Select * from user_lab where username = ?", new UserLabMapper(), userName);
     }
 
     public int save(UserLab userLab) {
-        int userUpdate = jdbcOperations.update("insert into user_lab values(?, ?, ?, ?)", userLab.getUsername(), userLab.getName(), userLab.getSecondName(), userLab.getEmail());
+        int userUpdate = jdbcTemplate.update("insert into user_lab values(?, ?, ?, ?)", userLab.getUsername(), userLab.getName(), userLab.getSecondName(), userLab.getEmail());
         noteLabRepository.saveUserNotes(userLab);
 
         return userUpdate;
@@ -48,23 +48,21 @@ public class UserLabRepository {
     private final class UserLabMapper implements RowMapper<UserLab> {
         @Override
         public UserLab mapRow(ResultSet resultSet, int i) throws SQLException {
-            UserLab userLab = new UserLabBuilder().setUsername(resultSet.getString("username")).setName(resultSet.getString("name"))
-                    .setSecondname(resultSet.getString("second_name")).setEmail(resultSet.getString("email"))
-                    .createUserLab();
+            UserLab userLab = mapUserLab(resultSet);
+            
             List<NoteLab> notes = noteLabRepository.findAllFromUser(userLab.getUsername());
             userLab.addNotes(notes);
             return userLab;
         }
     }
-
-    private final class UserLabMapperLazy implements RowMapper<UserLab> {
-        @Override
-        public UserLab mapRow(ResultSet resultSet, int i) throws SQLException {
-            UserLab userLab = new UserLabBuilder().setUsername(resultSet.getString("username")).setName(resultSet.getString("name"))
-                    .setSecondname(resultSet.getString("second_name")).setEmail(resultSet.getString("email"))
-                    .createUserLab();
-            return userLab;
-        }
+    
+    private UserLab mapUserLab(ResultSet resultSet) throws SQLException {
+    	return new UserLabBuilder()
+    				.username(resultSet.getString("username"))
+    				.name(resultSet.getString("name"))
+    				.secondname(resultSet.getString("second_name"))
+    				.email(resultSet.getString("email"))
+    				.createUserLab();
     }
 
 }

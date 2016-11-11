@@ -6,22 +6,22 @@ public class UserLabBuilder {
     private String secondname;
     private String email;
 
-    public UserLabBuilder setUsername(String username) {
+    public UserLabBuilder username(String username) {
         this.username = username;
         return this;
     }
 
-    public UserLabBuilder setName(String name) {
+    public UserLabBuilder name(String name) {
         this.name = name;
         return this;
     }
 
-    public UserLabBuilder setSecondname(String secondname) {
+    public UserLabBuilder secondname(String secondname) {
         this.secondname = secondname;
         return this;
     }
 
-    public UserLabBuilder setEmail (String email) {
+    public UserLabBuilder email(String email) {
         this.email = email;
         return this;
     }
