@@ -23,7 +23,7 @@ public class UserLab implements Serializable{
     @Size(min=5, max=15)
     private String email;
 
-    private Map<String,NoteLab> noteLabs;
+    private Map<String, NoteLab> noteLabs;
 
     public UserLab() {
         noteLabs = new HashMap<>();
@@ -74,7 +74,8 @@ public class UserLab implements Serializable{
     }
 
     public List<NoteLab> getNotesAsList() {
-        Collection coll = noteLabs.values();
+        Collection<NoteLab> coll = noteLabs.values();
+        
         if (coll instanceof List) {
             return (List) coll;
         }
@@ -95,7 +96,7 @@ public class UserLab implements Serializable{
         if (!noteLabs.containsKey(noteLab.getTitle())) {
             noteLabs.put(noteLab.getTitle(),noteLab);
         } else {
-            throw new RuntimeException("Note's title is repeated");
+            throw new IllegalArgumentException("Note's title is repeated");
         }
 
         return noteLab;

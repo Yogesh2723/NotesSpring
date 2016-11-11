@@ -10,7 +10,6 @@ import cat.tecnocampus.exceptions.UserLabNotFoundException;
 import cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +23,10 @@ import java.util.List;
  */
 @Service("userUseCases")
 public class UserUseCases {
-    private NoteLabRepository noteLabRepository;
-    private UserLabRepository userLabRepository;
+	
+    private final NoteLabRepository noteLabRepository;
+    
+    private final UserLabRepository userLabRepository;
 
     public UserUseCases(NoteLabRepository noteLabRepository, UserLabRepository userLabRepository) {
         this.noteLabRepository = noteLabRepository;
@@ -55,8 +56,8 @@ public class UserUseCases {
 
     public NoteLab addUserNote(UserLab userLab, String title, String contents) {
         LocalDateTime now = LocalDateTime.now();
-        NoteLab note = new NoteLabBuilder().setTitle(title).setContent(contents).
-                setTime(now).setTimeEdit(now).createNoteLab();
+        NoteLab note = new NoteLabBuilder().title(title).content(contents).
+                time(now).timeEdit(now).createNoteLab();
         userLab.addNote(note);
         noteLabRepository.save(note, userLab);
         return note;
