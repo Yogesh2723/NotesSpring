@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import cat.tecnocampus.domain.BagNoteLab;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -46,20 +47,28 @@ public class NoteLabRepository {
     }
 
     public int[] saveUserNotes(UserLab owner) {
+        return saveNotes(owner, owner.getNotesAsList());
+    }
+
+    public int[] saveUserBag(UserLab userLab, BagNoteLab bagNoteLab) {
+        return saveNotes(userLab, bagNoteLab.getNotes());
+    }
+
+    private int[] saveNotes(UserLab userLab, List<NoteLab> listNotes) {
         return jdbcTemplate.batchUpdate("INSERT INTO note_lab (title, content, date_creation, date_edit, owner) values(?, ?, ?, ?, ?)", new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
-                NoteLab note = owner.getNotesAsList().get(i);
+                NoteLab note = listNotes.get(i);
                 preparedStatement.setString(1, note.getTitle());
                 preparedStatement.setString(2, note.getContent());
                 preparedStatement.setTimestamp(3, Timestamp.valueOf(note.getDateCreation()));
                 preparedStatement.setTimestamp(4, Timestamp.valueOf(note.getDateEdit()));
-                preparedStatement.setString(5, owner.getUsername());
+                preparedStatement.setString(5, userLab.getUsername());
             }
 
             @Override
             public int getBatchSize() {
-                return owner.getnotes().size();
+                return listNotes.size();
             }
         });
     }

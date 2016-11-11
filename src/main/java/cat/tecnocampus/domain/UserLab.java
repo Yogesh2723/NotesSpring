@@ -76,7 +76,7 @@ public class UserLab implements Serializable{
         this.secondName = secondName;
     }
 
-    public Map<String, NoteLab> getnotes() {
+    public Map<String, NoteLab> getNotes() {
         return this.noteLabs;
     }
 
@@ -110,7 +110,7 @@ public class UserLab implements Serializable{
     }
 
     public NoteLab removeNote(NoteLab noteLab) {
-        getnotes().remove(noteLab);
+        getNotes().remove(noteLab);
 
         return noteLab;
     }
