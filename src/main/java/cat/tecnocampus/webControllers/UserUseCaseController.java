@@ -24,24 +24,33 @@ public class UserUseCaseController {
         this.userUseCases = userUseCases;
     }
 
-    //same as @RequestMapping(path="/notes", method= RequestMethod.GET)
-    @GetMapping("/notes")
+    @GetMapping
+    public String welcome() {
+        return "welcome";
+    }
+
+    //same as @RequestMapping(path="notes", method= RequestMethod.GET)
+/*
+    //This is the most implicit it's best to use a more explicit one
+    @GetMapping("notes")
     public List<NoteLab> listNotes() {
         return userUseCases.getAllNotes();
     }
-
-/*
-    @GetMapping("/notes")
-    public void listNotes(Model model) {
-        model.addAttribute("noteLabList", userUseCases.getAllNotes());
-    }
 */
 
-/*
-    @GetMapping("/notes")
+    //same as @RequestMapping(path="notes", method= RequestMethod.GET)
+    //This is the most explicit
+    @GetMapping("notes")
     public String listNotes(Model model) {
         model.addAttribute("noteLabList", userUseCases.getAllNotes());
         return "notes";
+    }
+
+
+/*
+    @GetMapping("notes")
+    public void listNotes(Model model) {
+        model.addAttribute("noteLabList", userUseCases.getAllNotes());
     }
 */
 
@@ -62,9 +71,19 @@ public class UserUseCaseController {
     }
 */
 
-    @GetMapping("/users")
+/*
+    //most implicit
+    @GetMapping("users")
     public List<UserLab> listUsers() {
         return userUseCases.getUsers();
+    }
+*/
+
+    //most explicit
+    @GetMapping("users")
+    public String listUsers(Model model) {
+        model.addAttribute("userLabList", userUseCases.getUsers());
+        return "users";
     }
 
     @GetMapping("/usersReqParam")
