@@ -50,6 +50,13 @@ public class UserUseCases {
         }
     }
 
+    //The @Transactiona annotation states that saveUser is a transaction. So ,if a unchecked exception is signaled
+    // (and not cached) during the saveUser method the transaction is going to rollback
+    @Transactional
+    public void saveUser(UserLab user) {
+        userLabRepository.save(user);
+    }
+
     public NoteLab addUserNote(UserLab userLab, String title, String contents) {
         LocalDateTime now = LocalDateTime.now();
         NoteLab note = new NoteLabBuilder().title(title).content(contents).
