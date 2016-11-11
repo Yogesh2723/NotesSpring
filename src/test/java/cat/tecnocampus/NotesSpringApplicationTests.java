@@ -33,7 +33,7 @@ public class NotesSpringApplicationTests {
 	@Test
 	public void formHasErrors() throws Exception {
 		mockMvc.perform(post("/createuser")
-						.param("name", "sergi"))
+						.param("name", "serg"))
 		.andExpect(model().hasErrors());
 	}
 	
