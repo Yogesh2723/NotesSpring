@@ -5,7 +5,6 @@ import cat.tecnocampus.databaseRepositories.UserLabRepository;
 import cat.tecnocampus.domain.NoteLab;
 import cat.tecnocampus.domain.NoteLabBuilder;
 import cat.tecnocampus.domain.UserLab;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +47,8 @@ public class UserUseCases {
 
     public NoteLab addUserNote(UserLab userLab, String title, String contents) {
         LocalDateTime now = LocalDateTime.now();
-        NoteLab note = new NoteLabBuilder().setTitle(title).setContent(contents).
-                setTime(now).setTimeEdit(now).createNoteLab();
+        NoteLab note = new NoteLabBuilder().title(title).content(contents).
+                time(now).timeEdit(now).createNoteLab();
         userLab.addNote(note);
         noteLabRepository.save(note, userLab);
         return note;
