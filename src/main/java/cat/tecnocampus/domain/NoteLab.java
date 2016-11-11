@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class NoteLab {
 
     private String title;
+    
     private String content;
 
     private final LocalDateTime dateCreation;
