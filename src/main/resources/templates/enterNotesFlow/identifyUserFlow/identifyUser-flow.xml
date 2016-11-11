@@ -10,8 +10,8 @@
 
     <decision-state id="isLogged">
         <if test="securityService.findLoggedInUsername().equals('anonymous')"
-        then="registerUser"
-        else ="lookupUser" />
+            then="registerUser"
+            else ="lookupUser" />
     </decision-state>
 
     <action-state id="lookupUser">
