@@ -1,11 +1,12 @@
 package cat.tecnocampus.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * Created by roure on 19/09/2016.
  */
-public class NoteLab {
+public class NoteLab implements Serializable{
 
     private String title;
     
@@ -20,6 +21,11 @@ public class NoteLab {
         this.setContent(content);
         this.dateCreation = time;
         this.setDateEdit(timeEdit);
+    }
+
+    public NoteLab() {
+        dateCreation = LocalDateTime.now();
+        dateEdit=dateCreation;
     }
 
     public String getTitle() {

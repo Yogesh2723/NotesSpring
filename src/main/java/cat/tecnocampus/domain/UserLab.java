@@ -1,29 +1,43 @@
 package cat.tecnocampus.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+
 /**
  * Created by roure on 19/09/2016.
  */
-public class UserLab {
+public class UserLab implements Serializable{
 
+    @Size(min=5, max=15)
     private String username;
+
+    @Size(min=5, max=15)
     private String name;
+
+    @Size(min=5, max=15)
     private String secondName;
+
+    @Email
     private String email;
 
     private Map<String, NoteLab> noteLabs;
+
+    private String password;
 
     public UserLab() {
         noteLabs = new HashMap<>();
     }
 
     public UserLab(String username, String name, String secondname, String email) {
-        this.noteLabs = new HashMap<>();
+        this();
         this.setUsername(username);
         this.setName(name);
         this.setSecondName(secondname);
@@ -68,7 +82,7 @@ public class UserLab {
 
     public List<NoteLab> getNotesAsList() {
         Collection<NoteLab> coll = noteLabs.values();
-        
+
         if (coll instanceof List) {
             return (List) coll;
         }
@@ -115,5 +129,13 @@ public class UserLab {
 
     public boolean existsNote(String title) {
         return noteLabs.containsKey(title);
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

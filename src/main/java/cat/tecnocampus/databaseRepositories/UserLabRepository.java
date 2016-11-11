@@ -5,6 +5,7 @@ import cat.tecnocampus.domain.UserLab;
 import cat.tecnocampus.domain.UserLabBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
