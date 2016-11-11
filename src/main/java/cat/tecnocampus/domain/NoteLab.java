@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class NoteLab implements Serializable{
 
     private String title;
+    
     private String content;
 
     private final LocalDateTime dateCreation;

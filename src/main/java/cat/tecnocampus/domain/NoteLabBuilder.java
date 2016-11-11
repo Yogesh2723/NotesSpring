@@ -8,22 +8,22 @@ public class NoteLabBuilder {
     private LocalDateTime time;
     private LocalDateTime timeEdit;
 
-    public NoteLabBuilder setTitle(String title) {
+    public NoteLabBuilder title(String title) {
         this.title = title;
         return this;
     }
 
-    public NoteLabBuilder setContent(String content) {
+    public NoteLabBuilder content(String content) {
         this.content = content;
         return this;
     }
 
-    public NoteLabBuilder setTime(LocalDateTime time) {
+    public NoteLabBuilder time(LocalDateTime time) {
         this.time = time;
         return this;
     }
 
-    public NoteLabBuilder setTimeEdit(LocalDateTime timeEdit) {
+    public NoteLabBuilder timeEdit(LocalDateTime timeEdit) {
         this.timeEdit = timeEdit;
         return this;
     }
