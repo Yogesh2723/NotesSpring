@@ -110,4 +110,9 @@ public class UserUseCaseController {
 
         return "userNotes";
     }
+
+    @GetMapping("byebye")
+    public String byebye() {
+        return "byebye";
+    }
 }
