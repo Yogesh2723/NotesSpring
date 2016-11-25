@@ -4,6 +4,7 @@ import oracle.jdbc.pool.OracleDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import javax.sql.DataSource;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 /**
  * Created by roure on 04/11/2016.
  */
+@Profile("!memory")
 @Configuration
 @ConfigurationProperties("oracle")
 public class OracleConfiguration {

@@ -57,6 +57,10 @@ public class UserUseCases {
         userLabRepository.save(user);
     }
 
+    public int deleteUser(String username) {
+        return userLabRepository.delete(username);
+    }
+
     public NoteLab addUserNote(UserLab userLab, String title, String contents) {
         LocalDateTime now = LocalDateTime.now();
         NoteLab note = new NoteLabBuilder().title(title).content(contents).

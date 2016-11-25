@@ -46,6 +46,10 @@ public class UserLabRepository {
         return userUpdate;
     }
 
+    public int delete(String username) {
+        return jdbcTemplate.update("delete from user_lab where username = ?", username);
+    }
+
     private final class UserLabMapper implements RowMapper<UserLab> {
         @Override
         public UserLab mapRow(ResultSet resultSet, int i) throws SQLException {
