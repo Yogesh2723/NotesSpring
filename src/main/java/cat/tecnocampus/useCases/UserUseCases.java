@@ -42,9 +42,9 @@ public class UserUseCases {
     //The @Transactiona annotation states that saveUser is a transaction. So ,if a unchecked exception is signaled
     // (and not cached) during the saveUser method the transaction is going to rollback
     @Transactional
-    public void registerUser(UserLab userLab) {
+    public int registerUser(UserLab userLab) {
         try {
-            userLabRepository.save(userLab);
+            return userLabRepository.save(userLab);
         } catch (DuplicateKeyException e) {
             throw new UserLabUsernameAlreadyExistsException(userLab.getUsername());
         }
