@@ -88,11 +88,12 @@ public class NotesSpringApplicationUnitTests {
     }
 
     @Test
-    @WithMockUser("sergi")
     public void createuser_get() throws Exception {
         mockMvc.perform(get("/createuser"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("userform"));
+                .andExpect(view().name("userform"))
+                .andExpect(model().attributeExists("userLab"))
+                .andExpect(model().attribute("userLab", new UserLab()));
     }
 
     @Test
