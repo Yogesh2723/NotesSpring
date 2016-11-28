@@ -25,7 +25,7 @@ public class UserUseCasesTests {
 
 	@Test(expected = DuplicateKeyException.class)
 	public void testDuplicateUserLab() {
-		UserLab u = new UserLab("jr", "pepe", "popo", "mail");
+		UserLab u = new UserLab("jrjrjr", "pepe", "popo", "mail");
 		
 		IntStream.range(1, 5)
 				 .mapToObj(i -> new NoteLab("hola " + i, "content " + i, LocalDateTime.now(), LocalDateTime.now()))
