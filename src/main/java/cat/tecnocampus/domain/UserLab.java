@@ -124,7 +124,7 @@ public class UserLab implements Serializable{
     }
 
     public String toString() {
-        return "Usuari: " + this.username + ", " + this.name + " " + this.secondName;
+        return "Usuari: " + this.username + ", " + this.name + " " + this.secondName + " " + this.email + " " + this.password;
     }
 
     public boolean existsNote(String title) {
@@ -137,5 +137,32 @@ public class UserLab implements Serializable{
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserLab userLab = (UserLab) o;
+
+        if (username != null ? !username.equals(userLab.username) : userLab.username != null) return false;
+        if (name != null ? !name.equals(userLab.name) : userLab.name != null) return false;
+        if (secondName != null ? !secondName.equals(userLab.secondName) : userLab.secondName != null) return false;
+        if (email != null ? !email.equals(userLab.email) : userLab.email != null) return false;
+//        if (noteLabs != null ? !noteLabs.equals(userLab.noteLabs) : userLab.noteLabs != null) return false;
+        return password != null ? password.equals(userLab.password) : userLab.password == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = username != null ? username.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (secondName != null ? secondName.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+//        result = 31 * result + (noteLabs != null ? noteLabs.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        return result;
     }
 }

@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class NotesSpringApplicationIntegrationTests {
+public class NotesSpringApplicationSecurityTests {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -29,14 +29,7 @@ public class NotesSpringApplicationIntegrationTests {
 		mockMvc.perform(get("/createuser"))
 		.andExpect(status().isOk());
 	}
-	
-	@Test
-	public void formHasErrors() throws Exception {
-		mockMvc.perform(post("/createuser")
-						.param("name", "serg"))
-		.andExpect(model().hasErrors());
-	}
-	
+
 	@Test
 	@WithAnonymousUser
 	public void testWithAnonymousUser() throws Exception {

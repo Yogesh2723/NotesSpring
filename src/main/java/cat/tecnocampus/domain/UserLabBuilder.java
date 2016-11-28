@@ -5,6 +5,7 @@ public class UserLabBuilder {
     private String name;
     private String secondname;
     private String email;
+    private String password;
 
     public UserLabBuilder username(String username) {
         this.username = username;
@@ -26,7 +27,14 @@ public class UserLabBuilder {
         return this;
     }
 
+    public UserLabBuilder password(String password) {
+        this.password = password;
+        return this;
+    }
+
     public UserLab createUserLab() {
-        return new UserLab(username, name, secondname, email);
+        UserLab u = new UserLab(username, name, secondname, email);
+        u.setPassword(password);
+        return u;
     }
 }
