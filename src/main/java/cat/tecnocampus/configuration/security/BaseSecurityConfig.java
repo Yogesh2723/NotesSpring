@@ -23,6 +23,7 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter {
         		.mvcMatchers("/createuser").permitAll()
         		.mvcMatchers("/users").hasRole("USER")
         		.mvcMatchers("/users/{userId}").access("@webSecurity.checkUserId(authentication,#userId)")
+				.mvcMatchers("/users/{userId}/createNote").access("@webSecurity.checkUserId(authentication,#userId)")
         		.antMatchers("/enterNotesFlow").permitAll()
 				.antMatchers("/byebye").permitAll()
                 .anyRequest().authenticated()

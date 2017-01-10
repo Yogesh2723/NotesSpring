@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import cat.tecnocampus.exceptions.UserLabUsernameAlreadyExistsException;
 
+import java.util.Map;
+
 @ControllerAdvice
 public class UserControllerAdvice {
 
@@ -18,6 +20,7 @@ public class UserControllerAdvice {
     @ExceptionHandler
     public String handleUsernameAlreadyExists(UserLabUsernameAlreadyExistsException exception, Model model) {
         model.addAttribute("username", exception.getUsername());
+
         
         return "error/usernameAlreadyExists";
     }
