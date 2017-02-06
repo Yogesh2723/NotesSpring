@@ -26,7 +26,7 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter {
 				.mvcMatchers("/users/{userId}/createNote").access("@webSecurity.checkUserId(authentication,#userId)")
         		.antMatchers("/enterNotesFlow").permitAll()
 				.antMatchers("/byebye").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()//authenticated()
                 .and()
             .formLogin() //a login form is showed when no authenticated request
         		.and()

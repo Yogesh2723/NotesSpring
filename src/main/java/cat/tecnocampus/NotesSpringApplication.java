@@ -4,8 +4,11 @@ import cat.tecnocampus.databaseRepositories.NoteLabRepository;
 import cat.tecnocampus.databaseRepositories.UserLabRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
 @SpringBootApplication
 public class NotesSpringApplication {
